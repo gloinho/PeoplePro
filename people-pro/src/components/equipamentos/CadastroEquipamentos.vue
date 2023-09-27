@@ -8,16 +8,19 @@
                 class="form-select" 
                 id="tipo-equipamento"
                 v-model="equipamento.tipoEquipamento">
-                    <option v-for="tipo in tiposDisponiveis" :key="tipo">{{ tipo }}</option>
+                    <option v-for="tipo in tiposDisponiveis" :key="tipo" :value="tipo">{{ tipo }}</option>
                 </select>
+                <div v-if="v$.equipamento.tipoEquipamento.$error" :class="['submitError']">Selecione um tipo de equipamento</div>    
             </div>
             <div class="form-group">   
                 <label for="marca-equipamento">Marca</label>
-                <input class="form-control" type="text" id="marca-equipamento" v-model="equipamento.marca"/>            
+                <input class="form-control" type="text" id="marca-equipamento" v-model="equipamento.marca"/>        
+                <div v-if="v$.equipamento.marca.$error" :class="['submitError']">Marca não pode ser vazia</div>    
             </div>
             <div class="form-group">   
                 <label for="serial-equipamento">Serial</label>
-                <input class="form-control" type="text" id="serial-equipamento" v-model="equipamento.serial"/>            
+                <input class="form-control" type="text" id="serial-equipamento" v-model="equipamento.serial"/>    
+                <div v-if="v$.equipamento.serial.$error" :class="['submitError']">Serial não pode ser vazio</div>            
             </div>
             <div class="form-group">   
                 <label for="descricao-equipamento">Descricao</label>
@@ -25,7 +28,7 @@
             </div>
             <div class="form-group">   
                 <label for="data-compra-equipamento">Data de Compra</label>
-                <input class="form-control" type="date" id="data-compra-equipamento" v-model="equipamento.dataDeCompra"/>            
+                <input class="form-control" type="date" id="data-compra-equipamento" v-model="equipamento.dataDeCompra"/>   
             </div>
             <div class="form-group">   
                 <label for="ultima-atualizacao-equipamento">Ultima Atualização</label>
@@ -47,7 +50,12 @@
 </template>
 
 <script>
+import { useVuelidate } from '@vuelidate/core'
+import { required } from '@vuelidate/validators'
 export default{
+    setup () {
+    return { v$: useVuelidate() }
+    },
     data() {
         return  {
             equipamento : {
@@ -67,9 +75,35 @@ export default{
         tiposDisponiveis:['Android','Iphone','Desktop','Notebook']
         }         
     },
+    validations() {
+        return {
+        // Define as regras de validação para os campos
+            equipamento: {
+                tipoEquipamento: {required},
+                marca: { required }, // Usa a validação "required" para o campo "marca"
+                serial: {required},
+                descricao: {},
+                dataDeCompra: {},
+                ultimaAtualizacao: {},
+                caracteristicas: {
+                    ram: {},
+                    armazenamento: {},
+                    os: {},
+                    gpu: {}
+                }
+            }
+        }},
     methods: {
-        cadastrarEquipamento(){
-            console.log('Equipamento Cadastrado:',this.equipamento)
+        async cadastrarEquipamento(){
+            const isValid = await this.v$.$validate();
+            if(!isValid)
+            {
+                console.log(this.v$.$errors)
+            }
+            else
+            {
+                console.log('Equipamento Cadastrado:',this.equipamento)   
+            }
         }
     }
 }
