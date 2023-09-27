@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h1>Cadastrar Equipamentos</h1>
+        <h1>Cadastro de Equipamentos</h1>
         <form>
             <div class="form-group">
                 <label for="tipo-equipamento">Tipo do Equipamento</label>
@@ -8,7 +8,7 @@
                 class="form-select" 
                 id="tipo-equipamento"
                 v-model="equipamento.tipoEquipamento">
-                    <option v-for="tipo in tiposDisponiveis" :key="tipo" :value="tipo">{{ tipo }}</option>
+                    <option v-for="tipo in details.tipos" :key="tipo" :value="tipo">{{ tipo }}</option>
                 </select>
                 <div v-if="v$.equipamento.tipoEquipamento.$error" :class="['submitError']">Selecione um tipo de equipamento</div>    
             </div>
@@ -34,12 +34,36 @@
                 <label for="ultima-atualizacao-equipamento">Ultima Atualização</label>
                 <input class="form-control" type="date" id="ultima-atualizacao-equipamento" v-model="equipamento.ultimaAtualizacao"/>            
             </div>
-            <div v-if="equipamento.tipoEquipamento==='Desktop' || equipamento.tipoEquipamento === 'Notebook'">
-                <div v-for="(caracteristica, index) in equipamento.caracteristicas" :key="index" class="form-group">
-                    <label for="teste">{{index.charAt(0).toUpperCase() + index.slice(1)}}</label>  
-                    <input class="form-control" type="text" id="teste" v-model="equipamento.caracteristicas[index]"/>            
-                </div>
+            <div class="form-group">
+                    <label for="capacidade">Capacidade de Armazenamento(Gb)</label>
+                    <input class="form-control" type="number" v-model="equipamento.caracteristicas.armazenamento.capacidade">
+                    <div v-if="v$.equipamento.caracteristicas.armazenamento.capacidade.$error" :class="['submitError']">Armazenamento deve ser maior que 32GB</div>    
             </div>
+            
+            <!-- Caracteristicas dos Equipamentos: condicionais dependendo do tipo de equipamento escolhido. -->
+            <div v-if="equipamento.tipoEquipamento==='Desktop' || equipamento.tipoEquipamento === 'Notebook'">
+                <label for="armazenamento">Tipo de Armazenamento</label>
+                <div v-for="arm in details.armazenamento.tipo" :key="arm" class="form-check" id="armazenamento">
+                    <label :for="arm">{{ arm }}</label>
+                    <input class="form-check-input" type="radio" :value="arm" :id="arm" v-model="equipamento.caracteristicas.armazenamento.tipo">
+                </div>
+                <div v-if="v$.equipamento.caracteristicas.armazenamento.tipo.$error" :class="['submitError']">Selecione um tipo de armazenamento</div>    
+                <label for="equipamento-os">Sistema Operacional</label>
+                <div v-for="os in details.os.pc" :key="os" class="form-check" id="equipamento-os">
+                    <label :for="os">{{ os }}</label>
+                    <input class="form-check-input" type="radio" :value="os" :id="os" v-model="equipamento.caracteristicas.os">
+                </div>
+                <div v-if="v$.equipamento.caracteristicas.os.$error" :class="['submitError']">Selecione um sistema operacional</div>    
+            </div>
+            <div v-else-if="equipamento.tipoEquipamento==='Celular'">
+                <label for="equipamento-os">Sistema Operacional</label>
+                <div v-for="os in details.os.mobile" :key="os" class="form-check" id="equipamento-os">
+                    <label :for="os">{{ os }}</label>
+                    <input class="form-check-input" type="radio" :value="os" :id="os" v-model="equipamento.caracteristicas.os">
+                </div>
+                <div v-if="v$.equipamento.caracteristicas.os.$error" :class="['submitError']">Selecione um sistema operacional</div>    
+            </div>
+
             <button
                 type="submit"
                 class="btn btn-primary"
@@ -51,13 +75,13 @@
 
 <script>
 import { useVuelidate } from '@vuelidate/core'
-import { required } from '@vuelidate/validators'
+import { required, minValue, requiredIf } from '@vuelidate/validators'
 export default{
     setup () {
     return { v$: useVuelidate() }
     },
     data() {
-        return  {
+        return {
             equipamento : {
                 tipoEquipamento:'',
                 marca:'',
@@ -67,28 +91,38 @@ export default{
                 ultimaAtualizacao:'',
                 caracteristicas: {
                     ram:'',
-                    armazenamento:'',
+                    armazenamento:{tipo:'', capacidade:0},
                     os:'',
                     gpu:''
                 },
-        },
-        tiposDisponiveis:['Android','Iphone','Desktop','Notebook']
-        }         
+            },
+            details:{
+                tipos:['Celular','Desktop','Notebook'],
+                os: {
+                    pc:["Windows","Linux","macOS"],
+                    mobile:["iOS","Android"]
+                },
+                armazenamento:{
+                tipo:['HD','SSD'],
+                capacidade:0
+                },
+                gpu:''
+            }
+        }       
     },
     validations() {
         return {
-        // Define as regras de validação para os campos
             equipamento: {
                 tipoEquipamento: {required},
-                marca: { required }, // Usa a validação "required" para o campo "marca"
+                marca: { required }, 
                 serial: {required},
                 descricao: {},
                 dataDeCompra: {},
                 ultimaAtualizacao: {},
                 caracteristicas: {
                     ram: {},
-                    armazenamento: {},
-                    os: {},
+                    armazenamento: {tipo:{requiredIf: requiredIf(this.equipamento.tipoEquipamento!= 'Celular')}, capacidade:{minValue:minValue(32)}},
+                    os: {required},
                     gpu: {}
                 }
             }
