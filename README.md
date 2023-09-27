@@ -27,11 +27,7 @@ Este projeto está em desenvolvimento inicial e não está pronto para uso em pr
 2. Execute os comandos necessários para configurar o ambiente de desenvolvimento.
 3. Inicie o servidor de desenvolvimento e acesse a aplicação localmente.
 
-## Licença
-
-Este projeto está licenciado sob a [Nome da Licença] - consulte o arquivo LICENSE.md para obter detalhes.
-
 ## Contato
 
-Se você tiver dúvidas ou sugestões, entre em contato conosco em [seu endereço de e-mail].
+Se você tiver dúvidas ou sugestões, entre em contato conosco em [stellabertthiolly@live.com].
 
