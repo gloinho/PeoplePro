@@ -1,32 +1,6 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light custom-nav">
-      <a class="navbar-brand" href="#">People Pro</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <router-link class="nav-link" to="/">Home</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/cadastro-colaborador">
-              Cadastro de Colaborador
-            </router-link>
-          </li>
-        </ul>
-      </div>
-    </nav>
-
+    <AppHeader />
     <div class="container my-4">
       <router-view></router-view>
     </div>
@@ -34,8 +8,13 @@
 </template>
 
 <script>
+import AppHeader from './components/AppHeader.vue'
+
 export default {
   name: 'App',
+  components:{
+    AppHeader
+  }
 };
 </script>
 

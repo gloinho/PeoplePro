@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import CadastroColaborador from './colaboradores/CadastroColaborador.vue'; // Importe o componente corretamente
+import CadastroColaborador from './components/colaboradores/CadastroColaborador.vue'; // Importe o componente corretamente
+import CadastroEquipamentos from './components/equipamentos/CadastroEquipamentos.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -8,6 +9,11 @@ const router = createRouter({
       path: '/cadastro-colaborador',
       name: 'CadastroColaborador',
       component: CadastroColaborador,
+    },
+    {
+      path: '/cadastro-equipamento',
+      name: 'CadastroEquipamentos',
+      component: CadastroEquipamentos,
     },
     // Outras rotas aqui, se necessário
   ],
