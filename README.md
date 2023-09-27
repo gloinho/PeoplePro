@@ -15,7 +15,7 @@ Este é um projeto em desenvolvimento inicial para otimizar a alocação de tale
 
 ## Contribuição
 
-Este projeto está em desenvolvimento ativo e você é bem-vindo para contribuir. Sinta-se à vontade para criar pull requests, relatar problemas ou sugerir melhorias. Consulte o arquivo CONTRIBUTING.md para obter detalhes sobre como contribuir.
+Este projeto está em desenvolvimento ativo e você é bem-vindo para contribuir. Sinta-se à vontade para criar pull requests, relatar problemas ou sugerir melhorias. Consulte o [arquivo CONTRIBUTING.md](https://github.com/stellaoliveirabertt/PeoplePro/blob/main/CONTRIBUTING.md) para obter detalhes sobre como contribuir.
 
 ## Status do Projeto
 
@@ -30,4 +30,3 @@ Este projeto está em desenvolvimento inicial e não está pronto para uso em pr
 ## Contato
 
 Se você tiver dúvidas ou sugestões, entre em contato conosco em [stellabertthiolly@live.com].
-
