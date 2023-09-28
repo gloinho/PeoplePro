@@ -94,6 +94,13 @@
           /> -->
 
           <button type="submit" class="btn btn-primary">Cadastrar</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            @click="limparFormulario"
+          >
+            Limpar Formulário
+          </button>
         </form>
       </div>
     </v-container>
@@ -157,6 +164,15 @@ export default {
     submitForm() {
       // Envio do formulário
       // Aqui você pode enviar os dados do colaborador para o backend ou fazer alguma outra ação necessária.
+    },
+    limparFormulario() {
+      // Limpa todos os campos do formulário
+      this.colaborador.nome = '';
+      this.colaborador.telefone = '';
+      this.colaborador.email = '';
+      this.colaborador.dataAdmissao = '';
+      this.colaborador.habilidades = [];
+      this.colaborador.contrato = null;
     },
   },
 };
