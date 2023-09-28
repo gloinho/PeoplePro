@@ -2,8 +2,9 @@
     <div class="container">
         <form>
             <div class="row border border-primary">
+                <h4>Adicionar tipo de equipamento</h4>
                 <div class="form-group col-auto">
-                    <label for="tipo">Nome do Tipo</label>
+                    <label for="tipo">Tipo de Equipamento</label>
                     <input class="form-control" id="tipo" v-model="tipo">
                     <div v-if="v$.tipo.$error" :class="['submitError']">Tipo já existente.</div>    
                 </div>

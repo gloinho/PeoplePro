@@ -14,10 +14,10 @@
                     <div v-if="v$.equipamento.tipoEquipamento.$error" :class="['submitError']">Selecione um tipo de equipamento</div>  
                 </div>
                 <div class="form-group col-auto">
-                    <button class="btn btn-primary mt-4"  @click.prevent="this.novoTipo = !this.novoTipo">+</button>
+                    <button class="btn btn-primary mt-4"  @click.prevent="this.showCadastrarTipo = !this.showCadastrarTipo">+</button>
                 </div>
                     <CadastrarTipoDeEquipamento 
-                    v-if="novoTipo"
+                    v-if="showCadastrarTipo"
                     :tipos="details.tipos" 
                     @novo-tipo="adicionarTipo"/>
 
@@ -128,7 +128,7 @@ export default{
                 gpu:''
             },
             equipamentosDisponiveis:[],
-            novoTipo:false,
+            showCadastrarTipo:false,
         }       
     },
     methods: {
@@ -146,8 +146,7 @@ export default{
             }
         },
         async adicionarTipo(tipo){
-            this.novoTipo = !this.novoTipo;
-            console.log(tipo)
+            this.showCadastrarTipo = !this.showCadastrarTipo;
             this.details.tipos.push(tipo)
         }
     },
