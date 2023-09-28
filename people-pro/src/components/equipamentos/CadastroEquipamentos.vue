@@ -42,19 +42,23 @@
             
             <!-- Caracteristicas dos Equipamentos: condicionais dependendo do tipo de equipamento escolhido. -->
             <div v-if="equipamento.tipoEquipamento==='Desktop' || equipamento.tipoEquipamento === 'Notebook'">
+
                 <label for="armazenamento">Tipo de Armazenamento</label>
                 <div v-for="arm in details.armazenamento.tipo" :key="arm" class="form-check" id="armazenamento">
                     <label :for="arm">{{ arm }}</label>
                     <input class="form-check-input" type="radio" :value="arm" :id="arm" v-model="equipamento.caracteristicas.armazenamento.tipo">
                 </div>
-                <div v-if="v$.equipamento.caracteristicas.armazenamento.tipo.$error" :class="['submitError']">Selecione um tipo de armazenamento</div>    
+                <div v-if="v$.equipamento.caracteristicas.armazenamento.tipo.$error" :class="['submitError']">Selecione um tipo de armazenamento</div> 
+
                 <label for="equipamento-os">Sistema Operacional</label>
                 <div v-for="os in details.os.pc" :key="os" class="form-check" id="equipamento-os">
                     <label :for="os">{{ os }}</label>
                     <input class="form-check-input" type="radio" :value="os" :id="os" v-model="equipamento.caracteristicas.os">
                 </div>
-                <div v-if="v$.equipamento.caracteristicas.os.$error" :class="['submitError']">Selecione um sistema operacional</div>    
+                <div v-if="v$.equipamento.caracteristicas.os.$error" :class="['submitError']">Selecione um sistema operacional</div>   
+
             </div>
+
             <div v-else-if="equipamento.tipoEquipamento==='Celular'">
                 <label for="equipamento-os">Sistema Operacional</label>
                 <div v-for="os in details.os.mobile" :key="os" class="form-check" id="equipamento-os">
@@ -107,8 +111,30 @@ export default{
                 capacidade:0
                 },
                 gpu:''
-            }
+            },
+            equipamentosDisponiveis:[]
         }       
+    },
+    methods: {
+        async cadastrarEquipamento(){
+            const isValid = await this.v$.$validate();
+            if(!isValid)
+            {
+                console.log(this.v$.$errors)
+            }
+            else
+            {
+                console.log('Equipamento Cadastrado:',this.equipamento)   
+                this.equipamentosDisponiveis.push(this.equipamento);
+                console.log(this.equipamentosDisponiveis)
+            }
+        },
+        adicionarTipoDeEquipamento(tipo){
+            this.equipamento.tipos.push(tipo)
+        },
+        adicionarOs(pc, os){
+            pc ? this.equipamento.os.pc.push(os) : this.equipamento.os.mobile.push(os)
+        }
     },
     validations() {
         return {
@@ -126,19 +152,6 @@ export default{
                     gpu: {}
                 }
             }
-        }},
-    methods: {
-        async cadastrarEquipamento(){
-            const isValid = await this.v$.$validate();
-            if(!isValid)
-            {
-                console.log(this.v$.$errors)
-            }
-            else
-            {
-                console.log('Equipamento Cadastrado:',this.equipamento)   
-            }
-        }
-    }
+    }}
 }
 </script>
