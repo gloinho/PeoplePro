@@ -2,15 +2,25 @@
     <div class="container">
         <h1>Cadastro de Equipamentos</h1>
         <form>
-            <div class="form-group">
-                <label for="tipo-equipamento">Tipo do Equipamento</label>
-                <select 
-                class="form-select" 
-                id="tipo-equipamento"
-                v-model="equipamento.tipoEquipamento">
-                    <option v-for="tipo in details.tipos" :key="tipo" :value="tipo">{{ tipo }}</option>
-                </select>
-                <div v-if="v$.equipamento.tipoEquipamento.$error" :class="['submitError']">Selecione um tipo de equipamento</div>    
+            <div class="row">
+                <div class="form-group col-auto">
+                    <label for="tipo-equipamento">Tipos Disponíveis</label>
+                    <select 
+                    class="form-select" 
+                    id="tipo-equipamento"
+                    v-model="equipamento.tipoEquipamento">
+                        <option v-for="tipo in details.tipos" :key="tipo" :value="tipo">{{ tipo }}</option>
+                    </select>
+                    <div v-if="v$.equipamento.tipoEquipamento.$error" :class="['submitError']">Selecione um tipo de equipamento</div>  
+                </div>
+                <div class="form-group col-auto">
+                    <button class="btn btn-primary mt-4"  @click.prevent="this.novoTipo = !this.novoTipo">+</button>
+                </div>
+                    <CadastrarTipoDeEquipamento 
+                    v-if="novoTipo"
+                    :tipos="details.tipos" 
+                    @novo-tipo="adicionarTipo"/>
+
             </div>
             <div class="form-group">   
                 <label for="marca-equipamento">Marca</label>
@@ -80,7 +90,12 @@
 <script>
 import { useVuelidate } from '@vuelidate/core'
 import { required, minValue, requiredIf } from '@vuelidate/validators'
+import CadastrarTipoDeEquipamento from './CadastrarTipoDeEquipamento.vue'
+
 export default{
+    components:{
+        CadastrarTipoDeEquipamento
+    },
     setup () {
     return { v$: useVuelidate() }
     },
@@ -112,7 +127,8 @@ export default{
                 },
                 gpu:''
             },
-            equipamentosDisponiveis:[]
+            equipamentosDisponiveis:[],
+            novoTipo:false,
         }       
     },
     methods: {
@@ -129,11 +145,10 @@ export default{
                 console.log(this.equipamentosDisponiveis)
             }
         },
-        adicionarTipoDeEquipamento(tipo){
-            this.equipamento.tipos.push(tipo)
-        },
-        adicionarOs(pc, os){
-            pc ? this.equipamento.os.pc.push(os) : this.equipamento.os.mobile.push(os)
+        async adicionarTipo(tipo){
+            this.novoTipo = !this.novoTipo;
+            console.log(tipo)
+            this.details.tipos.push(tipo)
         }
     },
     validations() {
@@ -151,7 +166,7 @@ export default{
                     os: {required},
                     gpu: {}
                 }
-            }
+            },
     }}
 }
 </script>
