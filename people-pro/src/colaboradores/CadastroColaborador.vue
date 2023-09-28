@@ -1,197 +1,163 @@
 <template>
-  <v-app>
-    <v-main>
-      <v-container>
-        <div class="container">
-          <h1>Cadastro de Colaboradores</h1>
-          <div>
-            <form>
-              <div class="form-group">
-                <label for="nome">Nome</label>
-                <input type="text" class="form-control" id="nome" required />
-              </div>
-              <div class="form-group">
-                <label for="telefone">Telefone</label>
-                <input
-                  type="tel"
-                  class="form-control"
-                  id="telefone"
-                  required
-                  pattern="[0-9]{10}"
-                />
-                <small id="telefoneHelp" class="form-text text-muted"
-                  >Deve ter 10 dígitos.</small
-                >
-              </div>
-              <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" required />
-              </div>
-              <div class="form-group">
-                <label for="dataAdmissao">Data de Admissão</label>
-                <input
-                  type="date"
-                  class="form-control"
-                  id="dataAdmissao"
-                  required
-                />
-              </div>
-
-              <!-- Tabela de habilidades -->
-              <div class="form-group">
-                <label for="habilidade">Habilidades</label>
-                <div class="input-group">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="habilidade"
-                    v-model="novaHabilidade"
-                  />
-                  <div class="input-group-append">
-                    <button
-                      type="button"
-                      class="btn btn-outline-secondary"
-                      @click.prevent="adicionarHabilidade"
-                    >
-                      Adicionar
-                    </button>
-                  </div>
-                </div>
-                <table class="table mt-2">
-                  <thead>
-                    <tr>
-                      <th>Habilidade</th>
-                      <th>Nível</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(habilidade, index) in habilidades" :key="index">
-                      <td>{{ habilidade.nome }}</td>
-                      <td>
-                        <select
-                          class="custom-select"
-                          v-model="habilidade.nivel"
-                        >
-                          <option value="">Selecione</option>
-                          <option value="básico">Básico</option>
-                          <option value="intermediário">Intermediário</option>
-                          <option value="avançado">Avançado</option>
-                        </select>
-                      </td>
-                      <td>
-                        <button
-                          type="button"
-                          @click.prevent="removerHabilidade(index)"
-                        >
-                          Remover
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <!-- Seleção de contratos -->
-              <div class="form-group">
-                <label for="contratos">Contratos</label>
-                <select
-                  multiple
-                  class="custom-select"
-                  id="contratos"
-                  v-model="contratosSelecionados"
-                >
-                  <option
-                    v-for="(contrato, index) in colaborador.contratos"
-                    :key="index"
-                    :value="contrato.id"
-                  >
-                    {{ contrato.nome }}
-                  </option>
-                </select>
-
-                <!-- Lista de contratos selecionados -->
-                <ul class="list-group mt-2">
-                  <li
-                    v-for="(contrato, index) in colaborador.contratos.filter(
-                      (c) => contratosSelecionados.includes(c.id)
-                    )"
-                    :key="index"
-                    class="list-group-item d-flex justify-content-between align-items-center"
-                  >
-                    {{ contrato.nome }}
-                    <button
-                      type="button"
-                      @click.prevent="removerContrato(index)"
-                    >
-                      Remover
-                    </button>
-                  </li>
-                </ul>
-              </div>
-
-              <!-- Botão de cadastro -->
-              <button
-                type="submit"
-                class="btn btn-primary"
-                @click.prevent="cadastrarColaborador"
-              >
-                Cadastrar
-              </button>
-            </form>
+  <v-main>
+    <v-container>
+      <div class="container">
+        <h1>Cadastro de Colaboradores</h1>
+        <form @submit.prevent="submitForm">
+          <div class="form-group">
+            <label for="nome">Nome</label>
+            <input
+              type="text"
+              class="form-control"
+              id="nome"
+              v-model="colaborador.nome"
+              required
+              :class="{ 'is-invalid': !validarNome(colaborador.nome) }"
+            />
+            <span
+              v-if="!validarNome(colaborador.nome)"
+              class="invalid-feedback"
+            >
+              O campo Nome deve conter pelo menos um nome e um sobrenome com
+              pelo menos 3 caracteres cada.
+            </span>
           </div>
-        </div>
-      </v-container>
-    </v-main>
-  </v-app>
+          <div class="form-group">
+            <label for="telefone">Telefone</label>
+            <input
+              type="tel"
+              class="form-control"
+              id="telefone"
+              v-model="colaborador.telefone"
+              required
+              pattern="[0-9]{10}"
+              :class="{ 'is-invalid': !validarTelefone(colaborador.telefone) }"
+            />
+            <small id="telefoneHelp" class="form-text text-muted">
+              Deve ter 10 dígitos.
+            </small>
+            <span
+              v-if="!validarTelefone(colaborador.telefone)"
+              class="invalid-feedback"
+            >
+              O campo Telefone deve conter apenas números.
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              v-model="colaborador.email"
+              required
+              :class="{ 'is-invalid': !validarEmail(colaborador.email) }"
+            />
+            <span
+              v-if="!validarEmail(colaborador.email)"
+              class="invalid-feedback"
+            >
+              O campo Email deve ser válido.
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="dataAdmissao">Data de Admissão</label>
+            <input
+              type="date"
+              class="form-control"
+              id="dataAdmissao"
+              v-model="colaborador.dataAdmissao"
+              required
+              :class="{
+                'is-invalid': !validarDataAdmissao(colaborador.dataAdmissao),
+              }"
+            />
+            <span
+              v-if="!validarDataAdmissao(colaborador.dataAdmissao)"
+              class="invalid-feedback"
+            >
+              O campo Data de Admissão deve ser uma data válida.
+            </span>
+          </div>
+
+          <!-- Componente de tabela de habilidades -->
+          <!-- <tabela-habilidades
+            :habilidades="colaborador.habilidades"
+            @adicionar-habilidade="adicionarHabilidade"
+          /> -->
+
+          <!-- Componente de seleção de contratos -->
+          <!-- <selecao-contratos
+            :contratos-disponiveis="contratosDisponiveis"
+            :contrato-selecionado="colaborador.contrato"
+            @selecionar-contrato="selecionarContrato"
+          /> -->
+
+          <button type="submit" class="btn btn-primary">Cadastrar</button>
+        </form>
+      </div>
+    </v-container>
+  </v-main>
 </template>
 
 <script>
+// import TabelaHabilidades from './TabelaHabilidades.vue';
+// import SelecaoContratos from './SelecaoContratos.vue';
+
 export default {
-  components: {},
+  name: 'CadastroColaboradores',
+  components: {
+    // TabelaHabilidades,
+    // SelecaoContratos,
+  },
   data() {
     return {
       colaborador: {
         nome: '',
         telefone: '',
         email: '',
-        dataAdmissao: null,
-        novaHabilidade: '',
-        contratos: [
-          { id: 1, nome: 'Contrato 1' },
-          { id: 2, nome: 'Contrato 2' },
-          { id: 3, nome: 'Contrato 3' },
-        ],
+        dataAdmissao: '',
+        habilidades: [],
+        contrato: null,
       },
-      habilidades: [],
-      contratosSelecionados: [],
+      contratosDisponiveis: [
+        { id: 1, nome: 'PJ' },
+        { id: 2, nome: 'CLT' },
+      ],
     };
   },
   methods: {
-    cadastrarColaborador() {
-      console.log('Colaborador cadastrado:', this.colaborador);
+    validarNome(nome) {
+      // Validação do campo Nome
+      // Deve conter pelo menos um nome e um sobrenome com pelo menos 3 caracteres cada.
+      const nomes = nome.trim().split(' ');
+      return nomes.length >= 2 && nomes.every((n) => n.length >= 3);
     },
-    adicionarHabilidade() {
-      if (this.novaHabilidade === '') {
-        return;
-      }
-
-      this.habilidades.push({
-        nome: this.novaHabilidade,
-        nivel: '',
-      });
-
-      this.novaHabilidade = '';
+    validarTelefone(telefone) {
+      // Validação do campo Telefone
+      // Deve conter apenas números.
+      return /^\d+$/.test(telefone);
     },
-    removerHabilidade(index) {
-      this.habilidades.splice(index, 1);
+    validarEmail(email) {
+      // Validação do campo Email
+      // Deve ser um email válido.
+      return /\S+@\S+\.\S+/.test(email);
     },
-    removerContrato(index) {
-      this.contratosSelecionados.splice(index, 1);
+    validarDataAdmissao(dataAdmissao) {
+      // Validação do campo Data de Admissão
+      // Deve ser uma data válida.
+      return !isNaN(Date.parse(dataAdmissao));
+    },
+    adicionarHabilidade(habilidade) {
+      this.colaborador.habilidades.push(habilidade);
+    },
+    selecionarContrato(contrato) {
+      this.colaborador.contrato = contrato;
+    },
+    submitForm() {
+      // Envio do formulário
+      // Aqui você pode enviar os dados do colaborador para o backend ou fazer alguma outra ação necessária.
     },
   },
 };
 </script>
-
-<style scoped>
-/* Estilos do componente */
-</style>
