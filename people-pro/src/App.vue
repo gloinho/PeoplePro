@@ -4,7 +4,7 @@
     <div class="container my-4">
       <router-view></router-view>
     </div>
-    <AppFooter/>
+    <AppFooter />
   </div>
 </template>
 
@@ -14,7 +14,7 @@ import AppFooter from './components/AppFooter.vue'
 
 export default {
   name: 'App',
-  components:{
+  components: {
     AppHeader,
     AppFooter
   }

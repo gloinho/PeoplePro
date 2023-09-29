@@ -6,7 +6,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: '/cadastro-colaborador',
+      path: '/',
       name: 'CadastroColaborador',
       component: CadastroColaborador,
     },
