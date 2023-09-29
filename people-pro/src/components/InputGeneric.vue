@@ -1,11 +1,11 @@
 <template>
-  <div :class="cols" style="padding: 0 2% 2% 0;">
+  <div :class="cols" style="padding: 0 2% 2% 0">
     <label :for="inputId">{{ label }}</label>
     <input
       :type="type"
       :class="[inputClass, { 'is-invalid': !isValid }]"
       :id="inputId"
-      v-model="localValue"
+      :value="modelValue"
       :required="required"
       @input="handleInput"
     />
@@ -17,13 +17,13 @@
 
 <script>
 export default {
-  name: 'InputField',
+  name: 'InputGeneric',
   props: {
     label: String,
     type: String,
     inputClass: String,
     inputId: String,
-    value: [String, Number],
+    modelValue: { type: [String, Number], default: '' },
     validator: Function,
     required: Boolean,
     isInvalid: Boolean,
@@ -40,8 +40,8 @@ export default {
     },
   },
   methods: {
-    handleInput() {
-      this.$emit('input', this.localValue);
+    handleInput(evt) {
+      this.$emit('update:modelValue', evt.target.value);
     },
   },
 };
