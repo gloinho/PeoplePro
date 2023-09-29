@@ -10,7 +10,6 @@
         v-model="colaborador.nome"
         :required="true"
         :validator="validarNome"
-        :isInvalid="!validarNome"
       />
       <input-field
         label="Telefone"
@@ -20,7 +19,6 @@
         v-model="colaborador.telefone"
         :validator="validarTelefone"
         :required="true"
-        :isInvalid="!validarTelefone"
       />
       <input-field
         label="Email"
@@ -62,9 +60,13 @@
             :label="'Nível'"
             :options="nivelOptions"
             v-model="novoNivel"
+            @input="handleSelect($event)"
           />
 
-          <button type="submit" class="col-12 col-md-2 people-pro-form-btn btn btn-primary">
+          <button
+            type="submit"
+            class="col-12 col-md-2 people-pro-form-btn btn btn-primary"
+          >
             Adicionar
           </button>
         </form>
@@ -149,8 +151,11 @@ export default {
     };
   },
   methods: {
+    handleSelect(e) {
+      if (e.target) console.log('handleSelect', e.target.value);
+    },
     validarNome(nome) {
-      return nome.length >= 3;
+      return nome?.length >= 3;
     },
     validarTelefone(telefone) {
       const regex = /^\([0-9]{2}\)\s[0-9]{4,5}-[0-9]{4}$/;
@@ -166,6 +171,7 @@ export default {
       return data <= hoje;
     },
     adicionarHabilidade() {
+      console.log(this.novaHabilidade, this.novoNivel);
       const habilidade = {
         nome: this.novaHabilidade,
         nivel: this.novoNivel,

@@ -1,5 +1,5 @@
 <template>
-  <div :class="cols" style="padding: 0 2% 2% 0;">
+  <div :class="cols" style="padding: 0 2% 2% 0">
     <label :for="inputId">{{ label }}</label>
     <input
       :type="type"
@@ -7,7 +7,7 @@
       :id="inputId"
       v-model="localValue"
       :required="required"
-      @input="handleInput"
+      @input="emitValue"
     />
     <div v-if="!isValid" class="invalid-feedback">
       O campo {{ label }} é inválido.
@@ -23,7 +23,7 @@ export default {
     type: String,
     inputClass: String,
     inputId: String,
-    value: [String, Number],
+    model: [String, Number],
     validator: Function,
     required: Boolean,
     isInvalid: Boolean,
@@ -39,8 +39,11 @@ export default {
       return this.validator ? this.validator(this.localValue) : true;
     },
   },
+  mounted() {
+    this.localValue = this.model;
+  },
   methods: {
-    handleInput() {
+    emitValue() {
       this.$emit('input', this.localValue);
     },
   },
