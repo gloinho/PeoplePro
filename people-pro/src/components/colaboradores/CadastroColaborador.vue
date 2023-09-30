@@ -2,67 +2,23 @@
   <div class="container">
     <h1>Cadastro de Colaboradores</h1>
     <form @submit.prevent="submitForm">
-      <input-field
-        label="Nome"
-        type="text"
-        input-class="form-control"
-        input-id="colaboradorNome"
-        v-model="colaborador.nome"
-        :required="true"
-        :validator="validarNome"
-        :isInvalid="!validarNome"
-      />
-      <input-field
-        label="Telefone"
-        type="tel"
-        input-class="form-control"
-        input-id="colaboradorTelefone"
-        v-model="colaborador.telefone"
-        :validator="validarTelefone"
-        :required="true"
-        :isInvalid="!validarTelefone"
-      />
-      <input-field
-        label="Email"
-        type="email"
-        input-class="form-control"
-        input-id="colaboradorEmail"
-        v-model="colaborador.email"
-        :required="true"
-        :validator="validarEmail"
-      />
-      <input-field
-        label="Data de Admissão"
-        type="date"
-        input-class="form-control"
-        input-id="colaboradorDataAdmissao"
-        v-model="colaborador.dataAdmissao"
-        :required="true"
-        :validator="validarDataAdmissao"
-      />
+      <input-field label="Nome" type="text" input-class="form-control" input-id="colaboradorNome"
+        v-model="colaborador.nome" :required="true" :validator="validarNome" :isInvalid="!validarNome" />
+      <input-field label="Telefone" type="tel" input-class="form-control" input-id="colaboradorTelefone"
+        v-model="colaborador.telefone" :validator="validarTelefone" :required="true" :isInvalid="!validarTelefone" />
+      <input-field label="Email" type="email" input-class="form-control" input-id="colaboradorEmail"
+        v-model="colaborador.email" :required="true" :validator="validarEmail" />
+      <input-field label="Data de Admissão" type="date" input-class="form-control" input-id="colaboradorDataAdmissao"
+        v-model="colaborador.dataAdmissao" :required="true" :validator="validarDataAdmissao" />
 
       <div class="people-pro-container">
         <h3 class="people-pro-title">Habilidades:</h3>
         <form class="people-pro-form" @submit.prevent="adicionarHabilidade()">
-          <input-field
-            id="novaHabilidade"
-            type="text"
-            v-model="novaHabilidade"
-            :cols="'col-12 col-md-5'"
-            required
-            label="Habilidade"
-            input-class="form-control people-pro-form-input"
-            input-id="novaHabilidade"
-          />
+          <input-field id="novaHabilidade" type="text" v-model="novaHabilidade" :cols="'col-12 col-md-5'" required
+            label="Habilidade" input-class="form-control people-pro-form-input" input-id="novaHabilidade" />
 
-          <select-generico
-            :cols="'col-12 col-md-5'"
-            input-class="form-control people-pro-form-input"
-            :input-id="'novoNivel'"
-            :label="'Nível'"
-            :options="nivelOptions"
-            v-model="novoNivel"
-          />
+          <select-generico :cols="'col-12 col-md-5'" input-class="form-control people-pro-form-input"
+            :input-id="'novoNivel'" :label="'Nível'" :options="nivelOptions" v-model="novoNivel" />
 
           <button type="submit" class="col-12 col-md-2 people-pro-form-btn btn btn-primary">
             Adicionar
@@ -77,25 +33,16 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="(habilidade, index) in colaborador.habilidades"
-              :key="'habilidade_' + index"
-            >
+            <tr v-for="(habilidade, index) in colaborador.habilidades" :key="'habilidade_' + index">
               <td>{{ habilidade.nome }}</td>
               <td>{{ habilidade.nivel }}</td>
               <td>
-                <button
-                  class="people-pro-btn people-pro-btn-remover"
-                  type="button"
-                  @click.prevent="removerHabilidade(index)"
-                >
+                <button class="people-pro-btn people-pro-btn-remover" type="button"
+                  @click.prevent="removerHabilidade(index)">
                   Remover
                 </button>
-                <button
-                  class="people-pro-btn people-pro-btn-editar"
-                  type="button"
-                  @click.prevent="editarHabilidade(habilidade)"
-                >
+                <button class="people-pro-btn people-pro-btn-editar" type="button"
+                  @click.prevent="editarHabilidade(habilidade)">
                   Editar Nível
                 </button>
               </td>
@@ -106,11 +53,7 @@
       <div class="form-actions">
         <div class="button-container">
           <button type="submit" class="btn btn-primary">Cadastrar</button>
-          <button
-            type="button"
-            class="btn btn-secondary"
-            @click.prevent="limparFormulario"
-          >
+          <button type="button" class="btn btn-secondary" @click.prevent="limparFormulario">
             Limpar Formulário
           </button>
         </div>
@@ -119,8 +62,8 @@
   </div>
 </template>
 <script>
-import InputField from '../components/InputField.vue';
-import SelectGenerico from '../components/SelectGeneric.vue'; // Importe o novo componente
+import InputField from '../InputField.vue';
+import SelectGenerico from '../SelectGeneric.vue'; // Importe o novo componente
 
 export default {
   name: 'CadastroColaboradores',
@@ -189,7 +132,7 @@ export default {
       this.showEditModal = false;
       this.habilidadeSelecionada = null;
     },
-    submitForm() {},
+    submitForm() { },
     limparFormulario() {
       this.colaborador = {
         nome: '',
