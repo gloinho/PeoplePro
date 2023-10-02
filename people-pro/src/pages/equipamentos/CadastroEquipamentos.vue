@@ -85,7 +85,12 @@
             </div>
             <!-- Caracteristicas dos Equipamentos: condicionais dependendo do tipo de equipamento escolhido. -->
             <div
-                v-if="equipamento.tipoEquipamento && ['desktop', 'notebook'].includes(equipamento.tipoEquipamento)"
+                v-if="
+                    equipamento.tipoEquipamento &&
+                        ['desktop', 'notebook'].includes(
+                            equipamento.tipoEquipamento
+                        )
+                "
             >
                 <RadioInput
                     v-model="equipamento.caracteristicas.armazenamento.tipo"
@@ -95,7 +100,7 @@
                             .$errors
                     "
                     label="Tipo de Armazenamento"
-                    div-id="tipo-armazenamento"                  
+                    div-id="tipo-armazenamento"
                 />
 
                 <RadioInput
@@ -103,7 +108,7 @@
                     :options="details.os.pc"
                     :vuelidate="v$.equipamento.caracteristicas.os.$errors"
                     label="Sistema Operacional"
-                    div-id="equipamento-os"                 
+                    div-id="equipamento-os"
                 />
 
                 <InputGeneric
@@ -111,17 +116,22 @@
                     label="GPU"
                     type="text"
                     input-class="form-control"
-                    input-id="gpu"             
+                    input-id="gpu"
                 />
             </div>
 
-            <div v-else-if="equipamento.tipoEquipamento && equipamento.tipoEquipamento === 'mobile'">
+            <div
+                v-else-if="
+                    equipamento.tipoEquipamento &&
+                        equipamento.tipoEquipamento === 'mobile'
+                "
+            >
                 <RadioInput
                     v-model="equipamento.caracteristicas.os"
                     :options="details.os.mobile"
                     :vuelidate="v$.equipamento.caracteristicas.os.$errors"
                     label="Sistema Operacional"
-                    div-id="equipamento-os"                  
+                    div-id="equipamento-os"
                 />
             </div>
 
@@ -189,18 +199,18 @@ export default {
                 }
             });
         },
-        clearValues(){
-            this.v$.equipamento.caracteristicas.armazenamento.tipo.$reset()
-            this.v$.equipamento.caracteristicas.os.$reset()
-            this.equipamento.caracteristicas.armazenamento.tipo = ''
-            this.equipamento.caracteristicas.os = ''
-            this.equipamento.caracteristicas.gpu = ''
+        clearValues() {
+            this.v$.equipamento.caracteristicas.armazenamento.tipo.$reset();
+            this.v$.equipamento.caracteristicas.os.$reset();
+            this.equipamento.caracteristicas.armazenamento.tipo = '';
+            this.equipamento.caracteristicas.os = '';
+            this.equipamento.caracteristicas.gpu = '';
         },
         adicionarTipo(tipo) {
             this.showCadastrarTipo = !this.showCadastrarTipo;
             this.details.tipos.push(tipo);
-            this.equipamento.tipoEquipamento = tipo.value
-            this.clearValues()
+            this.equipamento.tipoEquipamento = tipo.value;
+            this.clearValues();
         },
     },
 
@@ -231,7 +241,9 @@ export default {
                             requiredIf: helpers.withMessage(
                                 'Selecione um tipo de armazenamento',
                                 requiredIf(
-                                    ['desktop', 'notebook'].includes(this.equipamento.tipoEquipamento)
+                                    ['desktop', 'notebook'].includes(
+                                        this.equipamento.tipoEquipamento
+                                    )
                                 )
                             ),
                         },
@@ -245,7 +257,11 @@ export default {
                     os: {
                         requiredIf: helpers.withMessage(
                             'Selecione um sistema operacional.',
-                            requiredIf(['desktop', 'notebook','mobile'].includes(this.equipamento.tipoEquipamento))
+                            requiredIf(
+                                ['desktop', 'notebook', 'mobile'].includes(
+                                    this.equipamento.tipoEquipamento
+                                )
+                            )
                         ),
                     },
                 },

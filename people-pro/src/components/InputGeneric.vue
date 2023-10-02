@@ -13,11 +13,9 @@
             O campo {{ label }} é inválido.
         </div>
 
-        <div  v-for="(error, index) of vuelidate" :key="index">
-            <div  :class="['submitError']">{{ error.$message }}</div>
+        <div v-for="(error, index) of vuelidate" :key="index">
+            <div :class="['submitError']">{{ error.$message }}</div>
         </div>
-
-
     </div>
 </template>
 
