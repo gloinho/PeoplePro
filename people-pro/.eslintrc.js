@@ -8,5 +8,6 @@ module.exports = {
         'vue/require-explicit-emits': 'off',
         'vue/html-indent': ['error', 4],
         'vue/singleline-html-element-content-newline': 0,
+        'rule-name': 'off',
     },
 };

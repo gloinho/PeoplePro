@@ -7,7 +7,7 @@
             :type="type"
             :class="[inputClass, { 'is-invalid': !isValid }]"
             :required="required"
-            @input="emitValue"
+            @input="handleInput"
         />
         <div v-if="!isValid" class="invalid-feedback">
             O campo {{ label }} é inválido.
@@ -41,6 +41,7 @@ export default {
     },
     methods: {
         handleInput(evt) {
+            console.log(evt.target.value)
             this.$emit('update:modelValue', evt.target.value);
         },
     },
