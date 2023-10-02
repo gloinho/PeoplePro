@@ -4,8 +4,8 @@
         <select
             :id="inputId"
             :class="[inputClass]"
-            :value="selectedValue"
-            @input="emitValue"
+            :value="modelValue"
+            @input="handleInput"
         >
             <option
                 v-for="option in options"
@@ -21,19 +21,16 @@
 <script>
 export default {
     props: {
-        options: {
-            type: Array,
-            required: true,
-        },
+        options: Array,
         inputId: String,
         label: String,
         inputClass: String,
-        selectedValue: String,
+        modelValue: String,
         cols: String,
     },
     methods: {
-        emitValue(event) {
-            this.$emit('input', event.target.value);
+        handleInput(evt) {
+            this.$emit('update:modelValue', evt.target.value);
         },
     },
 };
