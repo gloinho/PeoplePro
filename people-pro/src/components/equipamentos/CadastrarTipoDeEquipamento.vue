@@ -3,14 +3,31 @@
         <form>
             <div class="row border border-primary">
                 <h4>Adicionar tipo de equipamento</h4>
+                <InputField 
+                cols="form-group col-auto"
+                label="Tipo de Equipamento" 
+                type="text" 
+                input-class="form-control"
+                input-id="tipo" 
+                v-model="tipo"
+                :vuelidate="v$.tipo.$errors" />
+
                 <div class="form-group col-auto">
-                    <label for="tipo">Tipo de Equipamento</label>
-                    <input class="form-control" id="tipo" v-model="tipo">
-                    <div v-if="v$.tipo.$error" :class="['submitError']">Tipo já existente.</div>    
+                    <button class="btn btn-primary mt-4"  @click.prevent="adicionarTipo">Adicionar</button>
+                </div>
+
+                <h4>Caracteristicas</h4>
+                <!-- As caracteristicas podem ser opcionais -->
+                <div class="form-group col-auto">
+                    <button class="btn btn-primary mt-4" @click.prevent>Adicionar Sistema Operacional</button>
                 </div>
                 <div class="form-group col-auto">
-                    <button class="btn btn-primary mt-4"  @click.prevent="adicionar">Adicionar</button>
+                    <button class="btn btn-primary mt-4" @click.prevent>Adicionar GPU</button>
                 </div>
+                <div class="form-group col-auto">
+                    <button class="btn btn-primary mt-4" @click.prevent>Adicionar Armazenamento</button>
+                </div>
+
             </div>
         </form>
     </div>
@@ -18,27 +35,35 @@
 
 <script>
 import { useVuelidate } from '@vuelidate/core'
-const checkType = (param) => (value) => !param.some(item => item.toLowerCase() === value.toLowerCase());
+import { helpers, required } from '@vuelidate/validators'
+import InputField from '../InputField.vue'
+const checkType = (param) => (value) => !param.some(item => item.value === value.toLowerCase());
 export default{ 
+    components:{
+        InputField
+    },
     setup () {
     return { v$: useVuelidate() }
     },
     name:'CadastrarTipoDeEquipamento',
     data(){
         return {
-            tipo:''
+            tipo:'',
+            osDisponivel: [],
+            armazenamento: [],
+            gpu: ''
         }    
     },
     props:{
         tipos:Array
     },
     methods: {
-        async adicionar(){
-            const isValid = await this.v$.$validate();
+         adicionarTipo(){
+            this.v$.$validate().then((isValid)=>{
             if(isValid)
             {
-                this.$emit('novo-tipo',this.tipo);
-            }
+                this.$emit('adicionarTipo',  {label: this.tipo, value: this.tipo.toLocaleLowerCase()});
+            }})
         }
     },
     beforeUnmount(){
@@ -47,7 +72,10 @@ export default{
     },
     validations() {
         return {           
-            tipo:{ isValid: checkType(this.tipos) }
+            tipo:{ 
+                isValid: helpers.withMessage("Tipo já existente.", checkType(this.tipos)),
+                required :helpers.withMessage("Preencha o nome do tipo", required)
+            }
     }}
 }
 </script>
@@ -55,6 +83,6 @@ export default{
 .border{
     border-radius: 15px;
     padding: 10px;
-    margin: 5px;
+    margin-bottom: 20px;
 }
 </style>

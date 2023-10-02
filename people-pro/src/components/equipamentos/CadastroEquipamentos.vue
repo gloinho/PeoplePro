@@ -22,24 +22,25 @@
                 :vuelidate="v$.equipamento.caracteristicas.armazenamento.capacidade.$errors" />
 
             <div class="row">
-                <div class="form-group col-auto">
-                    <label for="tipo-equipamento">Tipos Disponíveis</label>
-                    <select class="form-select" id="tipo-equipamento" v-model="v$.equipamento.tipoEquipamento.$model">
-                        <option v-for="tipo in details.tipos" :key="tipo" :value="tipo">{{ tipo }}</option>
-                    </select>
-                    <div v-for="(error, index) of v$.equipamento.tipoEquipamento.$errors" :key="index">
-                        <div :class="['submitError']">{{ error.$message }}</div>
-                    </div>
-                </div>
+                <SelectGeneric
+                :options="details.tipos" 
+                cols="form-group col-auto" 
+                input-id="tipo-equipamento" 
+                label="Tipos Disponíveis" 
+                input-class="form-select" 
+                v-model="equipamento.tipoEquipamento"
+                :vuelidate="v$.equipamento.tipoEquipamento.$errors"/>
+
                 <div class="form-group col-auto">
                     <button class="btn btn-primary mt-4"
                         @click.prevent="this.showCadastrarTipo = !this.showCadastrarTipo">+</button>
                 </div>
-                <CadastrarTipoDeEquipamento v-if="showCadastrarTipo" :tipos="details.tipos" @novo-tipo="adicionarTipo" />
+
+                <CadastrarTipoDeEquipamento v-if="showCadastrarTipo" :tipos="details.tipos" @adicionarTipo="adicionarTipo" />
+                
             </div>
             <!-- Caracteristicas dos Equipamentos: condicionais dependendo do tipo de equipamento escolhido. -->
-            <div v-if="equipamento.tipoEquipamento === 'Desktop' || equipamento.tipoEquipamento === 'Notebook'">
-
+            <div v-if="equipamento.tipoEquipamento === 'desktop' || equipamento.tipoEquipamento === 'notebook'">
                 <RadioInput :options="details.armazenamento.tipo" v-model="equipamento.caracteristicas.armazenamento.tipo"
                     :vuelidate="v$.equipamento.caracteristicas.armazenamento.tipo.$errors" label="Tipo de Armazenamento"
                     div-id="tipo-armazenamento" />
@@ -48,9 +49,11 @@
                     :vuelidate="v$.equipamento.caracteristicas.os.$errors" label="Sistema Operacional"
                     div-id="equipamento-os" />
 
+                <InputField label="GPU" type="text" input-class="form-control"
+                    input-id="gpu" v-model="equipamento.caracteristicas.gpu" />
             </div>
 
-            <div v-else-if="equipamento.tipoEquipamento === 'Celular'">
+            <div v-else-if="equipamento.tipoEquipamento === 'celular'">
                 <RadioInput :options="details.os.mobile" v-model="equipamento.caracteristicas.os"
                     :vuelidate="v$.equipamento.caracteristicas.os.$errors" label="Sistema Operacional"
                     div-id="equipamento-os" />
@@ -67,12 +70,14 @@ import { required, minValue, requiredIf, helpers } from '@vuelidate/validators'
 import CadastrarTipoDeEquipamento from './CadastrarTipoDeEquipamento.vue'
 import InputField from '../InputField.vue'
 import RadioInput from '../RadioInput.vue'
+import SelectGeneric from '../SelectGeneric.vue'
 
 export default {
     components: {
         CadastrarTipoDeEquipamento,
         InputField,
-        RadioInput
+        RadioInput,
+        SelectGeneric
     },
     setup() {
         return { v$: useVuelidate() }
@@ -94,7 +99,7 @@ export default {
                 },
             },
             details: {
-                tipos: ['Celular', 'Desktop', 'Notebook'],
+                tipos: [{label:'Celular', value:'celular'}, {label:'Desktop', value:'desktop'}, {label:'Notebook', value:'notebook'}],
                 os: {
                     pc: ["Windows", "Linux", "macOS"],
                     mobile: ["iOS", "Android"]
@@ -126,9 +131,10 @@ export default {
                 });
         },
 
-        async adicionarTipo(tipo) {
+        adicionarTipo(tipo) {
             this.showCadastrarTipo = !this.showCadastrarTipo;
             this.details.tipos.push(tipo)
+            console.log(this.details.tipos)
         }
     },
 

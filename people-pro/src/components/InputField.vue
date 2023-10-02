@@ -40,7 +40,6 @@ export default {
     },
     methods: {
         handleInput(evt) {
-            console.log(evt)
             this.$emit('update:modelValue', evt.target.value);
         },
     },

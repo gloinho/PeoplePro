@@ -4,8 +4,8 @@
     <select
       :id="inputId"
       :class="[inputClass]"
-      :value="selectedValue"
-      @input="emitValue"
+      :value="modelValue"
+      @input="handleInput"
     >
       <option
         v-for="option in options"
@@ -15,25 +15,27 @@
         {{ option.label }}
       </option>
     </select>
+    <div v-for="(error, index) of vuelidate" :key="index">
+      <div :class="['submitError']">{{ error.$message }}</div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    options: {
-      type: Array,
-      required: true,
-    },
+    options: Array,
     inputId: String,
     label: String,
     inputClass: String,
-    selectedValue: String,
+    modelValue: String,
     cols: String,
+    vuelidate:Object,
   },
   methods: {
-    emitValue(event) {
-      this.$emit('input', event.target.value);
+    handleInput(evt) {
+      console.log(this.modelValue)
+      this.$emit('update:modelValue', evt.target.value);
     },
   },
 };
