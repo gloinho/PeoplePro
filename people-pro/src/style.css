@@ -61,13 +61,12 @@
     background-color: #0074d9;
 }
 
-
-.submitError{
-  font-size: 13px;
-  color: red
+.submitError {
+    font-size: 13px;
+    color: red;
 }
 
-.body{
-  height: 100%;
-  width: 100%;
+.body {
+    height: 100%;
+    width: 100%;
 }

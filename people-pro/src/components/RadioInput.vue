@@ -1,9 +1,20 @@
 <template>
     <label :for="divId">{{ label }}</label>
-    <div v-for="option in options" :key="option" class="form-group form-check" :id="divId">
+    <div
+        v-for="option in options"
+        :id="divId"
+        :key="option"
+        class="form-group form-check"
+    >
         <label :for="option"> {{ option }} </label>
-        <input class="form-check-input" type="radio" v-model="selectedOption" :value="option" :id="option"
-            @change="selectOption(option)">
+        <input
+            :id="option"
+            v-model="selectedOption"
+            class="form-check-input"
+            type="radio"
+            :value="option"
+            @change="selectOption(option)"
+        />
     </div>
     <div v-for="(error, index) of vuelidate" :key="index">
         <div :class="['submitError']">{{ error.$message }}</div>
@@ -16,14 +27,14 @@ export default {
     props: {
         options: {
             type: Array,
-            required: true
+            required: true,
         },
         modelValue: {
             type: String,
         },
         vuelidate: Object,
         label: String,
-        divId: String
+        divId: String,
     },
     data() {
         return {
@@ -33,8 +44,8 @@ export default {
     methods: {
         selectOption(option) {
             this.selectedOption = option;
-            this.$emit('update:modelValue', this.selectedOption)
-        }
-    }
-}
+            this.$emit('update:modelValue', this.selectedOption);
+        },
+    },
+};
 </script>

@@ -1,23 +1,23 @@
 <template>
-  <div id="app">
-    <AppHeader />
-    <div class="container my-4">
-      <router-view></router-view>
+    <div id="app">
+        <AppHeader />
+        <div class="container my-4">
+            <router-view></router-view>
+        </div>
+        <AppFooter />
     </div>
-    <AppFooter />
-  </div>
 </template>
 
 <script>
-import AppHeader from './components/AppHeader.vue'
-import AppFooter from './components/AppFooter.vue'
+import AppHeader from './components/AppHeader.vue';
+import AppFooter from './components/AppFooter.vue';
 
 export default {
-  name: 'App',
-  components: {
-    AppHeader,
-    AppFooter
-  }
+    name: 'App',
+    components: {
+        AppHeader,
+        AppFooter,
+    },
 };
 </script>
 

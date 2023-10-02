@@ -10,31 +10,30 @@
             aria-expanded="false"
             aria-label="Toggle navigation"
         >
-        <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
         </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
+        <div id="navbarNav" class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item">
                     <router-link class="nav-link" to="/">Home</router-link>
-                    </li>
-                    <li class="nav-item">
+                </li>
+                <li class="nav-item">
                     <router-link class="nav-link" to="/cadastro-colaborador">
                         Cadastro de Colaborador
                     </router-link>
-                    </li>
-                    <li class="nav-item">
+                </li>
+                <li class="nav-item">
                     <router-link class="nav-link" to="/cadastro-equipamento">
                         Cadastro de Equipamentos
                     </router-link>
-                    </li>
-                </ul>
-            </div>
-    </nav>        
+                </li>
+            </ul>
+        </div>
+    </nav>
 </template>
 
 <script>
-    export default{
-        name: 'AppHeader'
-    }
+export default {
+    name: 'AppHeader',
+};
 </script>
-

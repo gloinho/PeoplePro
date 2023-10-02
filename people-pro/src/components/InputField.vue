@@ -1,8 +1,14 @@
 <template>
-    <div :class="cols" style="padding: 0 2% 2% 0;">
+    <div :class="cols" style="padding: 0 2% 2% 0">
         <label :for="inputId">{{ label }}</label>
-        <input :type="type" :class="[inputClass, { 'is-invalid': !isValid }]" :id="inputId" :value="modelValue"
-            :required="required" @input="handleInput" />
+        <input
+            :id="inputId"
+            :type="type"
+            :class="[inputClass, { 'is-invalid': !isValid }]"
+            :value="modelValue"
+            :required="required"
+            @input="handleInput"
+        />
         <div v-if="!isValid" class="invalid-feedback">
             O campo {{ label }} é inválido.
         </div>
