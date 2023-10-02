@@ -1,197 +1,243 @@
 <template>
-  <v-app>
-    <v-main>
-      <v-container>
-        <div class="container">
-          <h1>Cadastro de Colaboradores</h1>
-          <div>
-            <form>
-              <div class="form-group">
-                <label for="nome">Nome</label>
-                <input type="text" class="form-control" id="nome" required />
-              </div>
-              <div class="form-group">
-                <label for="telefone">Telefone</label>
-                <input
-                  type="tel"
-                  class="form-control"
-                  id="telefone"
-                  required
-                  pattern="[0-9]{10}"
-                />
-                <small id="telefoneHelp" class="form-text text-muted"
-                  >Deve ter 10 dígitos.</small
-                >
-              </div>
-              <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" required />
-              </div>
-              <div class="form-group">
-                <label for="dataAdmissao">Data de Admissão</label>
-                <input
-                  type="date"
-                  class="form-control"
-                  id="dataAdmissao"
-                  required
-                />
-              </div>
+    <div class="container">
+        <h1>Cadastro de Colaboradores</h1>
+        <form @submit.prevent="submitForm">
+            <input-field
+                v-model="colaborador.nome"
+                label="Nome"
+                type="text"
+                input-class="form-control"
+                input-id="colaboradorNome"
+                :required="true"
+                :validator="validarNome"
+            />
+            <input-field
+                v-model="colaborador.telefone"
+                label="Telefone"
+                type="tel"
+                input-class="form-control"
+                input-id="colaboradorTelefone"
+                :validator="validarTelefone"
+                :required="true"
+            />
+            <input-field
+                v-model="colaborador.email"
+                label="Email"
+                type="email"
+                input-class="form-control"
+                input-id="colaboradorEmail"
+                :required="true"
+                :validator="validarEmail"
+            />
+            <input-field
+                v-model="colaborador.dataAdmissao"
+                label="Data de Admissão"
+                type="date"
+                input-class="form-control"
+                input-id="colaboradorDataAdmissao"
+                :required="true"
+                :validator="validarDataAdmissao"
+            />
 
-              <!-- Tabela de habilidades -->
-              <div class="form-group">
-                <label for="habilidade">Habilidades</label>
-                <div class="input-group">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="habilidade"
-                    v-model="novaHabilidade"
-                  />
-                  <div class="input-group-append">
+            <div class="people-pro-container">
+                <h3 class="people-pro-title">Habilidades:</h3>
+                <form
+                    class="people-pro-form"
+                    @submit.prevent="adicionarHabilidade()"
+                >
+                    <input-field
+                        id="novaHabilidade"
+                        v-model="novaHabilidade"
+                        type="text"
+                        :cols="'col-12 col-md-5'"
+                        required
+                        label="Habilidade"
+                        input-class="form-control people-pro-form-input"
+                        input-id="novaHabilidade"
+                    />
+
+                    <select-generico
+                        v-model="novoNivel"
+                        :cols="'col-12 col-md-5'"
+                        input-class="form-control people-pro-form-input"
+                        :input-id="'novoNivel'"
+                        :label="'Nível'"
+                        :options="nivelOptions"
+                        @input="handleSelect($event)"
+                    />
+
                     <button
-                      type="button"
-                      class="btn btn-outline-secondary"
-                      @click.prevent="adicionarHabilidade"
+                        type="submit"
+                        class="col-12 col-md-2 people-pro-form-btn btn btn-primary"
                     >
-                      Adicionar
+                        Adicionar
                     </button>
-                  </div>
-                </div>
-                <table class="table mt-2">
-                  <thead>
-                    <tr>
-                      <th>Habilidade</th>
-                      <th>Nível</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(habilidade, index) in habilidades" :key="index">
-                      <td>{{ habilidade.nome }}</td>
-                      <td>
-                        <select
-                          class="custom-select"
-                          v-model="habilidade.nivel"
+                </form>
+                <table class="people-pro-table">
+                    <thead>
+                        <tr>
+                            <th>Habilidade</th>
+                            <th>Nível</th>
+                            <th>Opções</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            v-for="(
+                                habilidade, index
+                            ) in colaborador.habilidades"
+                            :key="'habilidade_' + index"
                         >
-                          <option value="">Selecione</option>
-                          <option value="básico">Básico</option>
-                          <option value="intermediário">Intermediário</option>
-                          <option value="avançado">Avançado</option>
-                        </select>
-                      </td>
-                      <td>
-                        <button
-                          type="button"
-                          @click.prevent="removerHabilidade(index)"
-                        >
-                          Remover
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
+                            <td>{{ habilidade.nome }}</td>
+                            <td>{{ habilidade.nivel }}</td>
+                            <td>
+                                <button
+                                    class="people-pro-btn people-pro-btn-remover"
+                                    type="button"
+                                    @click.prevent="removerHabilidade(index)"
+                                >
+                                    Remover
+                                </button>
+                                <button
+                                    class="people-pro-btn people-pro-btn-editar"
+                                    type="button"
+                                    @click.prevent="
+                                        editarHabilidade(habilidade)
+                                    "
+                                >
+                                    Editar Nível
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
-              </div>
-
-              <!-- Seleção de contratos -->
-              <div class="form-group">
-                <label for="contratos">Contratos</label>
-                <select
-                  multiple
-                  class="custom-select"
-                  id="contratos"
-                  v-model="contratosSelecionados"
-                >
-                  <option
-                    v-for="(contrato, index) in colaborador.contratos"
-                    :key="index"
-                    :value="contrato.id"
-                  >
-                    {{ contrato.nome }}
-                  </option>
-                </select>
-
-                <!-- Lista de contratos selecionados -->
-                <ul class="list-group mt-2">
-                  <li
-                    v-for="(contrato, index) in colaborador.contratos.filter(
-                      (c) => contratosSelecionados.includes(c.id)
-                    )"
-                    :key="index"
-                    class="list-group-item d-flex justify-content-between align-items-center"
-                  >
-                    {{ contrato.nome }}
-                    <button
-                      type="button"
-                      @click.prevent="removerContrato(index)"
-                    >
-                      Remover
+            </div>
+            <div class="form-actions">
+                <div class="button-container">
+                    <button type="submit" class="btn btn-primary">
+                        Cadastrar
                     </button>
-                  </li>
-                </ul>
-              </div>
-
-              <!-- Botão de cadastro -->
-              <button
-                type="submit"
-                class="btn btn-primary"
-                @click.prevent="cadastrarColaborador"
-              >
-                Cadastrar
-              </button>
-            </form>
-          </div>
-        </div>
-      </v-container>
-    </v-main>
-  </v-app>
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        @click.prevent="limparFormulario"
+                    >
+                        Limpar Formulário
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
 </template>
-
 <script>
+import InputField from '../components/InputField.vue';
+import SelectGenerico from '../components/SelectGeneric.vue'; // Importe o novo componente
+
 export default {
-  components: {},
-  data() {
-    return {
-      colaborador: {
-        nome: '',
-        telefone: '',
-        email: '',
-        dataAdmissao: null,
-        novaHabilidade: '',
-        contratos: [
-          { id: 1, nome: 'Contrato 1' },
-          { id: 2, nome: 'Contrato 2' },
-          { id: 3, nome: 'Contrato 3' },
-        ],
-      },
-      habilidades: [],
-      contratosSelecionados: [],
-    };
-  },
-  methods: {
-    cadastrarColaborador() {
-      console.log('Colaborador cadastrado:', this.colaborador);
+    name: 'CadastroColaboradores',
+    components: {
+        InputField,
+        SelectGenerico,
     },
-    adicionarHabilidade() {
-      if (this.novaHabilidade === '') {
-        return;
-      }
-
-      this.habilidades.push({
-        nome: this.novaHabilidade,
-        nivel: '',
-      });
-
-      this.novaHabilidade = '';
+    data() {
+        return {
+            colaborador: {
+                nome: '',
+                telefone: '',
+                email: '',
+                dataAdmissao: '',
+                habilidades: [],
+            },
+            novaHabilidade: '',
+            novoNivel: 'basico',
+            showEditModal: false,
+            habilidadeSelecionada: null,
+            nivelOptions: [
+                { label: 'Básico', value: 'basico' },
+                { label: 'Intermediário', value: 'intermediario' },
+                { label: 'Avançado', value: 'avancado' },
+            ],
+        };
     },
-    removerHabilidade(index) {
-      this.habilidades.splice(index, 1);
+    methods: {
+        handleSelect(e) {
+            if (e.target) console.log('handleSelect', e.target.value);
+        },
+        validarNome(nome) {
+            return nome?.length >= 3;
+        },
+        validarTelefone(telefone) {
+            const regex = /^\([0-9]{2}\)\s[0-9]{4,5}-[0-9]{4}$/;
+            return regex.test(telefone);
+        },
+        validarEmail(email) {
+            const regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
+            return regex.test(email);
+        },
+        validarDataAdmissao(dataAdmissao) {
+            const hoje = new Date();
+            const data = new Date(dataAdmissao);
+            return data <= hoje;
+        },
+        adicionarHabilidade() {
+            console.log(this.novaHabilidade, this.novoNivel);
+            const habilidade = {
+                nome: this.novaHabilidade,
+                nivel: this.novoNivel,
+            };
+            this.colaborador.habilidades.push(habilidade);
+            this.novaHabilidade = '';
+            this.novoNivel = 'basico';
+        },
+        removerHabilidade(index) {
+            this.colaborador.habilidades.splice(index, 1);
+        },
+        editarHabilidade(habilidade) {
+            this.habilidadeSelecionada = habilidade;
+            this.showEditModal = true;
+        },
+        confirmarEdicao() {
+            this.showEditModal = false;
+            this.habilidadeSelecionada = null;
+        },
+        cancelarEdicao() {
+            this.showEditModal = false;
+            this.habilidadeSelecionada = null;
+        },
+        submitForm() {},
+        limparFormulario() {
+            this.colaborador = {
+                nome: '',
+                telefone: '',
+                email: '',
+                dataAdmissao: '',
+                habilidades: [],
+            };
+        },
     },
-    removerContrato(index) {
-      this.contratosSelecionados.splice(index, 1);
-    },
-  },
 };
 </script>
 
 <style scoped>
-/* Estilos do componente */
+.people-pro-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.people-pro-table th,
+.people-pro-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.people-pro-table th:first-child,
+.people-pro-table td:first-child {
+    width: 40%;
+}
+
+.people-pro-table th:nth-child(2),
+.people-pro-table td:nth-child(2) {
+    width: 30%;
+}
 </style>

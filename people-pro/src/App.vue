@@ -1,10 +1,10 @@
 <template>
-  <div id="app">
-    <AppHeader />
-    <div class="container my-4">
-      <router-view></router-view>
+    <div id="app">
+        <AppHeader />
+        <div class="container my-4">
+            <router-view></router-view>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -20,22 +20,22 @@ export default {
 
 <style>
 .custom-nav {
-  background: linear-gradient(to right, #007bff, #1c8eff);
+    background: linear-gradient(to right, #007bff, #1c8eff);
 }
 
 .navbar-brand {
-  color: #fff;
+    color: #fff;
 }
 
 .container {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 0 15px;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 15px;
 }
 
 @media (min-width: 768px) {
-  .container {
-    padding: 0;
-  }
+    .container {
+        padding: 0;
+    }
 }
 </style>

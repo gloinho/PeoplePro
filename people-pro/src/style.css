@@ -1,0 +1,62 @@
+.people-pro-container {
+    margin: 20px;
+}
+
+.people-pro-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.people-pro-form {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.people-pro-form-input,
+.people-pro-form-select {
+    font-size: 16px;
+    padding: 5px;
+    border-radius: 5px;
+    margin-right: 10px;
+    width: 100%;
+}
+
+.people-pro-form-btn {
+    padding: 5px 10px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #0074d9;
+    margin-top: 24px;
+    height: 100%;
+}
+
+.people-pro-btn {
+    padding: 5px 10px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.people-pro-form-btn:hover {
+    background-color: #005ea8;
+}
+
+.people-pro-form-btn:focus {
+    outline: none;
+}
+
+.people-pro-form-btn:active {
+    background-color: #004d91;
+}
+
+.people-pro-btn-remover {
+    background-color: #ff4136;
+}
+
+.people-pro-btn-editar {
+    background-color: #0074d9;
+}
