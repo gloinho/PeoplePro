@@ -6,7 +6,7 @@
                 v-model="equipamento.marca"
                 label="Marca"
                 type="text"
-                input-class="form-control"
+                input-class="form-control people-pro-form-input"
                 input-id="marca-equipamento"
                 :vuelidate="v$.equipamento.marca.$errors"
             />
@@ -15,7 +15,7 @@
                 v-model="equipamento.serial"
                 label="Serial"
                 type="text"
-                input-class="form-control"
+                input-class="form-control people-pro-form-input"
                 input-id="serial-equipamento"
                 :vuelidate="v$.equipamento.serial.$errors"
             />
@@ -24,7 +24,7 @@
                 v-model="equipamento.descricao"
                 label="Descricao"
                 type="text"
-                input-class="form-control"
+                input-class="form-control people-pro-form-input"
                 input-id="descricao-equipamento"
             />
 
@@ -32,7 +32,7 @@
                 v-model="equipamento.dataDeCompra"
                 label="Data de Compra"
                 type="date"
-                input-class="form-control"
+                input-class="form-control people-pro-form-input"
                 input-id="data-compra-equipamento"
             />
 
@@ -40,7 +40,7 @@
                 v-model="equipamento.ultimaAtualizacao"
                 label="Ultima Atualização"
                 type="date"
-                input-class="form-control"
+                input-class="form-control people-pro-form-input"
                 input-id="ultima-atualizacao-equipamento"
             />
 
@@ -48,7 +48,7 @@
                 v-model="equipamento.caracteristicas.armazenamento.capacidade"
                 label="Capacidade de Armazenamento(Gb)"
                 type="number"
-                input-class="form-control"
+                input-class="form-control people-pro-form-input"
                 input-id="ultima-atualizacao-equipamento"
                 :vuelidate="
                     v$.equipamento.caracteristicas.armazenamento.capacidade
@@ -65,6 +65,7 @@
                     label="Tipos Disponíveis"
                     input-class="form-select"
                     :vuelidate="v$.equipamento.tipoEquipamento.$errors"
+                    @change="clearValues"
                 />
 
                 <div class="form-group col-auto">
@@ -72,7 +73,7 @@
                         class="btn btn-primary mt-4"
                         @click.prevent="showCadastrarTipo = !showCadastrarTipo"
                     >
-                        +
+                        Adicionar Tipo
                     </button>
                 </div>
 
@@ -84,10 +85,7 @@
             </div>
             <!-- Caracteristicas dos Equipamentos: condicionais dependendo do tipo de equipamento escolhido. -->
             <div
-                v-if="
-                    equipamento.tipoEquipamento === 'desktop' ||
-                        equipamento.tipoEquipamento === 'notebook'
-                "
+                v-if="equipamento.tipoEquipamento && ['desktop', 'notebook'].includes(equipamento.tipoEquipamento)"
             >
                 <RadioInput
                     v-model="equipamento.caracteristicas.armazenamento.tipo"
@@ -97,7 +95,7 @@
                             .$errors
                     "
                     label="Tipo de Armazenamento"
-                    div-id="tipo-armazenamento"
+                    div-id="tipo-armazenamento"                  
                 />
 
                 <RadioInput
@@ -105,7 +103,7 @@
                     :options="details.os.pc"
                     :vuelidate="v$.equipamento.caracteristicas.os.$errors"
                     label="Sistema Operacional"
-                    div-id="equipamento-os"
+                    div-id="equipamento-os"                 
                 />
 
                 <InputGeneric
@@ -113,17 +111,17 @@
                     label="GPU"
                     type="text"
                     input-class="form-control"
-                    input-id="gpu"
+                    input-id="gpu"             
                 />
             </div>
 
-            <div v-else-if="equipamento.tipoEquipamento === 'celular'">
+            <div v-else-if="equipamento.tipoEquipamento && equipamento.tipoEquipamento === 'mobile'">
                 <RadioInput
                     v-model="equipamento.caracteristicas.os"
                     :options="details.os.mobile"
                     :vuelidate="v$.equipamento.caracteristicas.os.$errors"
                     label="Sistema Operacional"
-                    div-id="equipamento-os"
+                    div-id="equipamento-os"                  
                 />
             </div>
 
@@ -145,6 +143,7 @@ import CadastrarTipoDeEquipamento from './CadastrarTipoDeEquipamento.vue';
 import InputGeneric from '../../components/InputGeneric.vue';
 import RadioInput from '../../components/RadioInput.vue';
 import SelectGeneric from '../../components/SelectGeneric.vue';
+import equipamento from '../../models/equipamento';
 
 export default {
     components: {
@@ -153,28 +152,14 @@ export default {
         RadioInput,
         SelectGeneric,
     },
-    setup() {
-        return { v$: useVuelidate() };
-    },
+    setup: () => ({ v$: useVuelidate() }),
+
     data() {
         return {
-            equipamento: {
-                tipoEquipamento: '',
-                marca: '',
-                serial: '',
-                descricao: '',
-                dataDeCompra: '',
-                ultimaAtualizacao: '',
-                caracteristicas: {
-                    ram: '',
-                    armazenamento: { tipo: '', capacidade: 0 },
-                    os: '',
-                    gpu: '',
-                },
-            },
+            equipamento,
             details: {
                 tipos: [
-                    { label: 'Celular', value: 'celular' },
+                    { label: 'Mobile', value: 'mobile' },
                     { label: 'Desktop', value: 'desktop' },
                     { label: 'Notebook', value: 'notebook' },
                 ],
@@ -195,22 +180,27 @@ export default {
 
     methods: {
         cadastrarEquipamento() {
-            console.log(this.equipamento);
             this.v$.$validate().then((isValid) => {
-                if (!isValid) {
-                    console.log(this.v$.$errors);
-                } else {
+                if (isValid) {
                     console.log('Equipamento Cadastrado:', this.equipamento);
                     this.equipamentosDisponiveis.push(this.equipamento);
                     console.log(this.equipamentosDisponiveis);
+                    console.log(this.v$.$errors);
                 }
             });
         },
-
+        clearValues(){
+            this.v$.equipamento.caracteristicas.armazenamento.tipo.$reset()
+            this.v$.equipamento.caracteristicas.os.$reset()
+            this.equipamento.caracteristicas.armazenamento.tipo = ''
+            this.equipamento.caracteristicas.os = ''
+            this.equipamento.caracteristicas.gpu = ''
+        },
         adicionarTipo(tipo) {
             this.showCadastrarTipo = !this.showCadastrarTipo;
             this.details.tipos.push(tipo);
-            console.log(this.details.tipos);
+            this.equipamento.tipoEquipamento = tipo.value
+            this.clearValues()
         },
     },
 
@@ -241,8 +231,7 @@ export default {
                             requiredIf: helpers.withMessage(
                                 'Selecione um tipo de armazenamento',
                                 requiredIf(
-                                    this.equipamento.tipoEquipamento !=
-                                        'Celular'
+                                    ['desktop', 'notebook'].includes(this.equipamento.tipoEquipamento)
                                 )
                             ),
                         },
@@ -254,9 +243,9 @@ export default {
                         },
                     },
                     os: {
-                        required: helpers.withMessage(
+                        requiredIf: helpers.withMessage(
                             'Selecione um sistema operacional.',
-                            required
+                            requiredIf(['desktop', 'notebook','mobile'].includes(this.equipamento.tipoEquipamento))
                         ),
                     },
                 },

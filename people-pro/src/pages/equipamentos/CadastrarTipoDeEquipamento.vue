@@ -2,41 +2,22 @@
     <div class="container">
         <form>
             <div class="row border border-primary">
-                <h4>Adicionar tipo de equipamento</h4>
-                <RadioInput
-                    v-model="tipo"
-                    cols="form-group col-auto"
+                <InputGeneric
+                    v-model="novoTipo"
+                    cols="form-group col-10"
                     label="Tipo de Equipamento"
                     type="text"
                     input-class="form-control"
                     input-id="tipo"
-                    :vuelidate="v$.tipo.$errors"
+                    :vuelidate="v$.novoTipo.$errors"
                 />
 
-                <div class="form-group col-auto">
+                <div class="form-group col-1">
                     <button
                         class="btn btn-primary mt-4"
                         @click.prevent="adicionarTipo"
                     >
                         Adicionar
-                    </button>
-                </div>
-
-                <h4>Caracteristicas</h4>
-                <!-- As caracteristicas podem ser opcionais -->
-                <div class="form-group col-auto">
-                    <button class="btn btn-primary mt-4" @click.prevent>
-                        Adicionar Sistema Operacional
-                    </button>
-                </div>
-                <div class="form-group col-auto">
-                    <button class="btn btn-primary mt-4" @click.prevent>
-                        Adicionar GPU
-                    </button>
-                </div>
-                <div class="form-group col-auto">
-                    <button class="btn btn-primary mt-4" @click.prevent>
-                        Adicionar Armazenamento
                     </button>
                 </div>
             </div>
@@ -47,47 +28,51 @@
 <script>
 import { useVuelidate } from '@vuelidate/core';
 import { helpers, required } from '@vuelidate/validators';
-import RadioInput from '../../components/RadioInput.vue';
+import InputGeneric from '../../components/InputGeneric.vue';
+
 const checkType = (param) => (value) =>
     !param.some((item) => item.value === value.toLowerCase());
+
 export default {
     name: 'CadastrarTipoDeEquipamento',
     components: {
-        RadioInput,
+        InputGeneric,
     },
     props: {
         tipos: Array,
     },
+
     setup() {
         return { v$: useVuelidate() };
     },
+
     data() {
         return {
-            tipo: '',
-            osDisponivel: [],
-            armazenamento: [],
-            gpu: '',
+            novoTipo: '',
         };
     },
+
     beforeUnmount() {
         const element = document.getElementById('tipo');
         element.value = '';
     },
+
     methods: {
         adicionarTipo() {
             this.v$.$validate().then((isValid) => {
                 if (isValid) {
                     this.$emit('adicionarTipo', {
-                        label: this.tipo,
-                        value: this.tipo.toLocaleLowerCase(),
+                        label: this.novoTipo,
+                        value: this.novoTipo.toLowerCase(),
                     });
                 }
             });
         },
     },
+
     validations() {
         return {
-            tipo: {
+            novoTipo: {
                 isValid: helpers.withMessage(
                     'Tipo já existente.',
                     checkType(this.tipos)
