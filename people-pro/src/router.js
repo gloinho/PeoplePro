@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import CadastroColaborador from './components/pages/colaboradores/Cadastro';
+import CadastroColaborador from './pages/colaboradores/Cadastro.vue';
 import CadastroEquipamentos from './components/equipamentos/CadastroEquipamentos.vue';
 
 const router = createRouter({
