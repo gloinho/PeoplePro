@@ -130,8 +130,8 @@
     </div>
 </template>
 <script>
-import InputField from '../components/InputField.vue';
-import SelectGenerico from '../components/SelectGeneric.vue'; // Importe o novo componente
+import InputField from '../InputField.vue';
+import SelectGenerico from '../SelectGeneric.vue'; // Importe o novo componente
 
 export default {
     name: 'CadastroColaboradores',
