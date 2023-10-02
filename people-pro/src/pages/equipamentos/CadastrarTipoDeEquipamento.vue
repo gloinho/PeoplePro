@@ -3,7 +3,7 @@
         <form>
             <div class="row border border-primary">
                 <h4>Adicionar tipo de equipamento</h4>
-                <InputField
+                <RadioInput
                     v-model="tipo"
                     cols="form-group col-auto"
                     label="Tipo de Equipamento"
@@ -47,13 +47,13 @@
 <script>
 import { useVuelidate } from '@vuelidate/core';
 import { helpers, required } from '@vuelidate/validators';
-import InputField from '../InputField.vue';
+import RadioInput from '../../components/RadioInput.vue';
 const checkType = (param) => (value) =>
     !param.some((item) => item.value === value.toLowerCase());
 export default {
     name: 'CadastrarTipoDeEquipamento',
     components: {
-        InputField,
+        RadioInput,
     },
     props: {
         tipos: Array,

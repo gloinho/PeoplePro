@@ -2,7 +2,7 @@
     <div class="container">
         <h1>Cadastro de Equipamentos</h1>
         <form>
-            <InputField
+            <InputGeneric
                 v-model="equipamento.marca"
                 label="Marca"
                 type="text"
@@ -11,7 +11,7 @@
                 :vuelidate="v$.equipamento.marca.$errors"
             />
 
-            <InputField
+            <InputGeneric
                 v-model="equipamento.serial"
                 label="Serial"
                 type="text"
@@ -20,7 +20,7 @@
                 :vuelidate="v$.equipamento.serial.$errors"
             />
 
-            <InputField
+            <InputGeneric
                 v-model="equipamento.descricao"
                 label="Descricao"
                 type="text"
@@ -28,7 +28,7 @@
                 input-id="descricao-equipamento"
             />
 
-            <InputField
+            <InputGeneric
                 v-model="equipamento.dataDeCompra"
                 label="Data de Compra"
                 type="date"
@@ -36,7 +36,7 @@
                 input-id="data-compra-equipamento"
             />
 
-            <InputField
+            <InputGeneric
                 v-model="equipamento.ultimaAtualizacao"
                 label="Ultima Atualização"
                 type="date"
@@ -44,7 +44,7 @@
                 input-id="ultima-atualizacao-equipamento"
             />
 
-            <InputField
+            <InputGeneric
                 v-model="equipamento.caracteristicas.armazenamento.capacidade"
                 label="Capacidade de Armazenamento(Gb)"
                 type="number"
@@ -108,7 +108,7 @@
                     div-id="equipamento-os"
                 />
 
-                <InputField
+                <InputGeneric
                     v-model="equipamento.caracteristicas.gpu"
                     label="GPU"
                     type="text"
@@ -142,14 +142,14 @@
 import { useVuelidate } from '@vuelidate/core';
 import { required, minValue, requiredIf, helpers } from '@vuelidate/validators';
 import CadastrarTipoDeEquipamento from './CadastrarTipoDeEquipamento.vue';
-import InputField from '../InputField.vue';
-import RadioInput from '../RadioInput.vue';
-import SelectGeneric from '../SelectGeneric.vue';
+import InputGeneric from '../../components/InputGeneric.vue';
+import RadioInput from '../../components/RadioInput.vue';
+import SelectGeneric from '../../components/SelectGeneric.vue';
 
 export default {
     components: {
         CadastrarTipoDeEquipamento,
-        InputField,
+        InputGeneric,
         RadioInput,
         SelectGeneric,
     },
