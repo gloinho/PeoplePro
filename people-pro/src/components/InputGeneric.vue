@@ -7,7 +7,7 @@
             :type="type"
             :class="[inputClass, { 'is-invalid': !isValid }]"
             :required="required"
-            @input="emitValue"
+            @input="handleInput"
         />
         <div v-if="!isValid" class="invalid-feedback">
             O campo {{ label }} é inválido.
@@ -17,13 +17,13 @@
 
 <script>
 export default {
-    name: 'InputField',
+    name: 'InputGeneric',
     props: {
         label: String,
         type: String,
         inputClass: String,
         inputId: String,
-        model: [String, Number],
+        modelValue: { type: [String, Number], default: '' },
         validator: Function,
         required: Boolean,
         isInvalid: Boolean,
@@ -39,12 +39,10 @@ export default {
             return this.validator ? this.validator(this.localValue) : true;
         },
     },
-    mounted() {
-        this.localValue = this.model;
-    },
     methods: {
-        emitValue() {
-            this.$emit('input', this.localValue);
+        handleInput(evt) {
+            console.log(evt.target.value)
+            this.$emit('update:modelValue', evt.target.value);
         },
     },
 };
