@@ -148,12 +148,12 @@
 
 <script>
 import { useVuelidate } from '@vuelidate/core';
-import { required, minValue, requiredIf, helpers } from '@vuelidate/validators';
 import CadastrarTipoDeEquipamento from './CadastrarTipoDeEquipamento.vue';
 import InputGeneric from '../../components/InputGeneric.vue';
 import RadioInput from '../../components/RadioInput.vue';
 import SelectGeneric from '../../components/SelectGeneric.vue';
 import equipamento from '../../models/equipamento';
+import equipamentoValidator from './validators/equipamento.validator';
 
 export default {
     components: {
@@ -213,56 +213,7 @@ export default {
 
     validations() {
         return {
-            equipamento: {
-                tipoEquipamento: {
-                    required: helpers.withMessage(
-                        'Selecione um tipo de equipamento',
-                        required
-                    ),
-                },
-                marca: {
-                    required: helpers.withMessage(
-                        'Equipamento precisa ter uma marca',
-                        required
-                    ),
-                },
-                serial: {
-                    required: helpers.withMessage(
-                        'Equipamento precisa ter um número de serial.',
-                        required
-                    ),
-                },
-                caracteristicas: {
-                    armazenamento: {
-                        tipo: {
-                            requiredIf: helpers.withMessage(
-                                'Selecione um tipo de armazenamento',
-                                requiredIf(
-                                    ['desktop', 'notebook'].includes(
-                                        this.equipamento.tipoEquipamento
-                                    )
-                                )
-                            ),
-                        },
-                        capacidade: {
-                            minValue: helpers.withMessage(
-                                'A capacidade mínima deve ser de 32.',
-                                minValue(32)
-                            ),
-                        },
-                    },
-                    os: {
-                        requiredIf: helpers.withMessage(
-                            'Selecione um sistema operacional.',
-                            requiredIf(
-                                ['desktop', 'notebook', 'mobile'].includes(
-                                    this.equipamento.tipoEquipamento
-                                )
-                            )
-                        ),
-                    },
-                },
-            },
+            equipamento: equipamentoValidator(this.equipamento.tipoEquipamento),
         };
     },
 };

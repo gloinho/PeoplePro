@@ -27,11 +27,8 @@
 
 <script>
 import { useVuelidate } from '@vuelidate/core';
-import { helpers, required } from '@vuelidate/validators';
 import InputGeneric from '../../components/InputGeneric.vue';
-
-const checkType = (param) => (value) =>
-    !param.some((item) => item.value === value.toLowerCase());
+import tipoDeEquipamentoValidation from './validators/tipo-equipamento.validator';
 
 export default {
     name: 'CadastrarTipoDeEquipamento',
@@ -69,19 +66,9 @@ export default {
             });
         },
     },
-
     validations() {
         return {
-            novoTipo: {
-                isValid: helpers.withMessage(
-                    'Tipo já existente.',
-                    checkType(this.tipos)
-                ),
-                required: helpers.withMessage(
-                    'Preencha o nome do tipo',
-                    required
-                ),
-            },
+            novoTipo: tipoDeEquipamentoValidation(this.tipos),
         };
     },
 };
