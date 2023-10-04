@@ -194,7 +194,6 @@ export default {
                 if (isValid) {
                     this.equipamentosDisponiveis.push(this.equipamento);
                     console.log(this.equipamentosDisponiveis);
-                    console.log(this.v$.$errors);
                 }
             });
         },
