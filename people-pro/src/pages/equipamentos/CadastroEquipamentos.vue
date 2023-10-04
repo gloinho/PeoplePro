@@ -193,7 +193,6 @@ export default {
             this.v$.$validate().then((isValid) => {
                 if (isValid) {
                     this.equipamentosDisponiveis.push(this.equipamento);
-                    console.log(this.equipamentosDisponiveis);
                 }
             });
         },
