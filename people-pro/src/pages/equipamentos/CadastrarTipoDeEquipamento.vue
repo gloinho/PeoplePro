@@ -28,7 +28,7 @@
 <script>
 import { useVuelidate } from '@vuelidate/core';
 import InputGeneric from '../../components/InputGeneric.vue';
-import tipoDeEquipamentoValidation from './validators/tipo-equipamento.validator';
+import tipoEquipamentoValidator from './validators/tipo-equipamento.validator';
 
 export default {
     name: 'CadastrarTipoDeEquipamento',
@@ -68,7 +68,7 @@ export default {
     },
     validations() {
         return {
-            novoTipo: tipoDeEquipamentoValidation(this.tipos),
+            novoTipo: tipoEquipamentoValidator(this.tipos),
         };
     },
 };
