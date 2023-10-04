@@ -53,10 +53,6 @@ export default {
     },
     methods: {
         handleInput() {
-            // Valor mascarado é enviado para o pai
-            // this.$emit('update:modelValue', evt.target.value);
-
-            // Valor sem máscara é enviado para o pai
             this.$emit('update:modelValue', this.bindedObject.unmasked);
         },
     },
