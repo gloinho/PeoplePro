@@ -24,7 +24,7 @@
 
 <script>
 import appRoutes from '../appRoutes'
-import _ from 'lodash'
+import startCase from 'lodash/startCase'
 export default {
     name: 'AppHeader',
     data(){
@@ -36,7 +36,7 @@ export default {
         this.appRoutes = appRoutes.map(route => {
             return {
                 ...route,
-                name: _.startCase(route.name)
+                name: startCase(route.name)
             }
         })
     }
