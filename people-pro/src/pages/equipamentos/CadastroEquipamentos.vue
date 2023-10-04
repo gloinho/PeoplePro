@@ -192,7 +192,6 @@ export default {
         cadastrarEquipamento() {
             this.v$.$validate().then((isValid) => {
                 if (isValid) {
-                    console.log('Equipamento Cadastrado:', this.equipamento);
                     this.equipamentosDisponiveis.push(this.equipamento);
                     console.log(this.equipamentosDisponiveis);
                     console.log(this.v$.$errors);
