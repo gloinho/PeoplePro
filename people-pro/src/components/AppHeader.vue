@@ -14,18 +14,8 @@
         </button>
         <div id="navbarNav" class="collapse navbar-collapse">
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <router-link class="nav-link" to="/">Home</router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link class="nav-link" to="/cadastro-colaborador">
-                        Cadastro de Colaborador
-                    </router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link class="nav-link" to="/cadastro-equipamento">
-                        Cadastro de Equipamentos
-                    </router-link>
+                <li v-for="route in appRoutes" :key="route.path" class="nav-item">
+                    <router-link class="nav-link" :to="route.path">{{ route.name }}</router-link>
                 </li>
             </ul>
         </div>
@@ -33,7 +23,22 @@
 </template>
 
 <script>
+import appRoutes from '../appRoutes'
+import _ from 'lodash'
 export default {
     name: 'AppHeader',
+    data(){
+        return {
+            appRoutes: []
+        }
+    },
+    created(){
+        this.appRoutes = appRoutes.map(route => {
+            return {
+                ...route,
+                name: _.startCase(route.name)
+            }
+        })
+    }
 };
 </script>
