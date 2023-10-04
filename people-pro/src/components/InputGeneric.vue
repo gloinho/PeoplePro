@@ -4,9 +4,11 @@
         <input
             :id="inputId"
             v-model="localValue"
+            v-maska="bindedObject"
             :type="type"
             :class="[inputClass, { 'is-invalid': !isValid }]"
             :required="required"
+            :data-maska="mask"
             @input="handleInput"
         />
         <div v-if="!isValid" class="invalid-feedback">
@@ -16,8 +18,12 @@
 </template>
 
 <script>
+import { vMaska as maska } from 'maska';
 export default {
     name: 'InputGeneric',
+    directives: {
+        maska,
+    },
     props: {
         label: String,
         type: String,
@@ -28,10 +34,16 @@ export default {
         required: Boolean,
         isInvalid: Boolean,
         cols: String,
+        mask: String,
     },
     data() {
         return {
             localValue: '',
+            bindedObject: {
+                masked: '',
+                unmasked: '',
+                completed: false,
+            },
         };
     },
     computed: {
@@ -40,9 +52,12 @@ export default {
         },
     },
     methods: {
-        handleInput(evt) {
-            console.log(evt.target.value)
-            this.$emit('update:modelValue', evt.target.value);
+        handleInput() {
+            // Valor mascarado é enviado para o pai
+            // this.$emit('update:modelValue', evt.target.value);
+
+            // Valor sem máscara é enviado para o pai
+            this.$emit('update:modelValue', this.bindedObject.unmasked);
         },
     },
 };
