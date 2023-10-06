@@ -14,8 +14,14 @@
         </button>
         <div id="navbarNav" class="collapse navbar-collapse">
             <ul class="navbar-nav">
-                <li v-for="route in appRoutes" :key="route.path" class="nav-item">
-                    <router-link class="nav-link" :to="route.path">{{ route.name }}</router-link>
+                <li
+                    v-for="route in appRoutes"
+                    :key="route.path"
+                    class="nav-item"
+                >
+                    <router-link class="nav-link" :to="route.path">{{
+                        route.name
+                    }}</router-link>
                 </li>
             </ul>
         </div>
@@ -23,22 +29,22 @@
 </template>
 
 <script>
-import appRoutes from '../appRoutes'
-import startCase from 'lodash/startCase'
+import appRoutes from '../appRoutes';
+import startCase from 'lodash/startCase';
 export default {
     name: 'AppHeader',
-    data(){
+    data() {
         return {
-            appRoutes: []
-        }
+            appRoutes: [],
+        };
     },
-    created(){
-        this.appRoutes = appRoutes.map(route => {
+    created() {
+        this.appRoutes = appRoutes.map((route) => {
             return {
                 ...route,
-                name: startCase(route.name)
-            }
-        })
-    }
+                name: startCase(route.name),
+            };
+        });
+    },
 };
 </script>

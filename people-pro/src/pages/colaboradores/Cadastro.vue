@@ -8,7 +8,8 @@
                 type="text"
                 input-class="form-control"
                 input-id="nome"
-                :required="true"
+                :vuelidate="v$.colaborador.nome.$errors"
+                
             />
             <input-generic
                 v-model="colaborador.telefone"
@@ -16,7 +17,8 @@
                 type="tel"
                 input-class="form-control"
                 input-id="telefone"
-                :required="true"
+                :vuelidate="v$.colaborador.telefone.$errors"
+                
             />
             <input-generic
                 v-model="colaborador.email"
@@ -24,7 +26,9 @@
                 type="email"
                 input-class="form-control"
                 input-id="email"
-                :required="true"
+                :vuelidate="v$.colaborador.email.$errors"
+                
+                
             />
             <input-generic
                 v-model="colaborador.dataAdmissao"
@@ -32,7 +36,7 @@
                 type="date"
                 input-class="form-control"
                 input-id="dataAdmissao"
-                :required="true"
+                
             />
 
             <div class="people-pro-container">
@@ -46,10 +50,11 @@
                         v-model="novaHabilidade"
                         type="text"
                         :cols="'col-12 col-md-5'"
-                        required
+                        :vuelidate="v$.colaborador.habilidades.$errors"
                         label="Habilidade"
                         input-class="form-control people-pro-form-input"
                         input-id="novaHabilidade"
+                        
                     />
 
                     <select-generico
@@ -101,9 +106,9 @@
 import InputGeneric from '../../components/InputGeneric.vue';
 import SelectGenerico from '../../components/SelectGeneric.vue';
 import TableGeneric from '../../components/TableGeneric.vue';
-
+import { useVuelidate } from '@vuelidate/core';
 import { postColaboradores } from './Api';
-
+import colaboradorValidator from './validators/colaborador.validator'
 export default {
     name: 'CadastroColaboradores',
     components: {
@@ -111,6 +116,9 @@ export default {
         SelectGenerico,
         TableGeneric,
     },
+
+    setup: () => ({ v$: useVuelidate() }),
+
     data() {
         return {
             colaborador: {
@@ -172,6 +180,12 @@ export default {
                 console.log(error);
             }
         },
+    },
+
+    validations() {
+        return {
+            colaborador: colaboradorValidator
+        };
     },
 };
 </script>
