@@ -5,16 +5,12 @@
             :id="inputId"
             v-model="localValue"
             :type="type"
-            :class="[inputClass, { 'is-invalid': !isValid }]"
-            :required="required"
+            :class="[inputClass, { 'is-invalid': isInvalid }]"
             @input="handleInput"
         />
-        <div v-if="!isValid" class="invalid-feedback">
-            O campo {{ label }} é inválido.
-        </div>
 
         <div v-for="(error, index) of vuelidate" :key="index">
-            <div :class="['submitError']">{{ error.$message }}</div>
+            <div class="submitError">{{ error.$message }}</div>
         </div>
     </div>
 </template>
@@ -28,26 +24,23 @@ export default {
         inputClass: String,
         inputId: String,
         modelValue: { type: [String, Number], default: '' },
-        validator: Function,
-        required: Boolean,
-        isInvalid: Boolean,
         cols: String,
-        vuelidate: Object,
+        vuelidate: Array,
     },
     data() {
         return {
             localValue: '',
         };
     },
-    computed: {
-        isValid() {
-            return this.validator ? this.validator(this.localValue) : true;
-        },
+    computed:{
+        isInvalid(){
+            return this.vuelidate ? this.vuelidate.length > 0 : false
+        }
     },
     methods: {
         handleInput(evt) {
             this.$emit('update:modelValue', evt.target.value);
         },
-    },
+    }
 };
 </script>
