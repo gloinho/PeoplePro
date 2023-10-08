@@ -17,6 +17,7 @@
                 input-class="form-control"
                 input-id="telefone"
                 :required="true"
+                :mask="telefoneMask"
             />
             <input-generic
                 v-model="colaborador.email"
@@ -138,6 +139,7 @@ export default {
                 },
             ],
             selectedOption: '',
+            telefoneMask: '(##) #####-####',
         };
     },
     methods: {
