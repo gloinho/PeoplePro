@@ -15,6 +15,9 @@
                 {{ option.label }}
             </option>
         </select>
+        <div v-for="(error, index) of vuelidate" :key="index">
+            <div :class="['submitError']">{{ error.$message }}</div>
+        </div>
     </div>
 </template>
 
@@ -27,6 +30,7 @@ export default {
         inputClass: String,
         modelValue: String,
         cols: String,
+        vuelidate: Object,
     },
     methods: {
         handleInput(evt) {
