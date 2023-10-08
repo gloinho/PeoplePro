@@ -10,7 +10,7 @@ export const get = async (url, params = {}) => {
     return response.data;
 };
 
-export const post = async (url, data = {}) => {
-    const response = await instance.post(url, data);
+export const post = async (url, params = {}) => {
+    const response = await instance.post(url, params);
     return response.data;
 };
