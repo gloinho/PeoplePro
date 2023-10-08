@@ -14,6 +14,10 @@
         <div v-if="!isValid" class="invalid-feedback">
             O campo {{ label }} é inválido.
         </div>
+
+        <div v-for="(error, index) of vuelidate" :key="index">
+            <div :class="['submitError']">{{ error.$message }}</div>
+        </div>
     </div>
 </template>
 
@@ -35,6 +39,7 @@ export default {
         isInvalid: Boolean,
         cols: String,
         mask: String,
+        vuelidate: Object,
     },
     data() {
         return {

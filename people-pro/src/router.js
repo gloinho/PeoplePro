@@ -1,15 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import CadastroColaborador from './pages/colaboradores/Cadastro';
+import appRoutes from './appRoutes';
 
 const router = createRouter({
     history: createWebHistory(),
-    routes: [
-        {
-            path: '/',
-            name: 'CadastroColaborador',
-            component: CadastroColaborador,
-        },
-    ],
+    routes: appRoutes,
 });
 
 export default router;
