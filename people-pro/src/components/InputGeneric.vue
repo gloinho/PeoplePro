@@ -4,8 +4,10 @@
         <input
             :id="inputId"
             v-model="localValue"
+            v-maska="bindedObject"
             :type="type"
             :class="[inputClass, { 'is-invalid': isInvalid }]"
+            :data-maska="mask"
             @input="handleInput"
         />
 
@@ -16,8 +18,12 @@
 </template>
 
 <script>
+import { vMaska as maska } from 'maska';
 export default {
     name: 'InputGeneric',
+    directives: {
+        maska,
+    },
     props: {
         label: String,
         type: String,
@@ -25,11 +31,17 @@ export default {
         inputId: String,
         modelValue: { type: [String, Number], default: '' },
         cols: String,
+        mask: String,
         vuelidate: Array,
     },
     data() {
         return {
             localValue: '',
+            bindedObject: {
+                masked: '',
+                unmasked: '',
+                completed: false,
+            },
         };
     },
     computed:{
@@ -38,8 +50,8 @@ export default {
         }
     },
     methods: {
-        handleInput(evt) {
-            this.$emit('update:modelValue', evt.target.value);
+        handleInput() {
+            this.$emit('update:modelValue', this.bindedObject.unmasked);
         },
     }
 };

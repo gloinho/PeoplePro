@@ -19,6 +19,7 @@
                 input-id="telefone"
                 :vuelidate="v$.colaborador.telefone.$errors"
                 
+                :mask="telefoneMask"
             />
             <input-generic
                 v-model="colaborador.email"
@@ -146,6 +147,7 @@ export default {
                 },
             ],
             selectedOption: '',
+            telefoneMask: '(##) #####-####',
         };
     },
     methods: {
