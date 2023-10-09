@@ -176,10 +176,13 @@ export default {
             this.novoNivel = 'basico';
         },
         async submitForm() {
-            try {
-                await postColaboradores(this.colaborador);
-            } catch (error) {
-                console.log(error);
+            const isValid = await this.v$.$validate();
+            if(isValid){
+                try {
+                    await postColaboradores(this.colaborador);
+                } catch (error) {
+                    console.log(error);
+                }
             }
         },
     },
